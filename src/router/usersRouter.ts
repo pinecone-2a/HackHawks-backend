@@ -3,6 +3,7 @@ import { Request, Response, Router } from "express";
 import bcrypt from "bcrypt";
 import { prisma } from "..";
 
+
 export const usersRouter = Router();
 
 usersRouter.post("/addnew", async (req: Request, res: Response) => {

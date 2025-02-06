@@ -1,67 +1,18 @@
 import { Request, Response, Router } from "express";
-import { prisma } from "..";
+import { createDonation } from "../controller/donation/CREATE-donation";
+import { receivedDonation } from "../controller/donation/RECEIVED-donation";
+import { searchDonation } from "../controller/donation/SEARCH-donation";
+import { totalDonation } from "../controller/donation/TOTAL-donation";
 
 const donationRouter = Router();
-// POST /donation/create-donation
-donationRouter.post("/create-donation", async (req: Request, res: Response) => {
-  const body = req.body;
-  try {
-    const newDonation = await prisma.donation.create({
-      data: body,
-    });
-    res.json(newDonation);
-  } catch (e) {
-    console.error(e, "aldaa");
-  }
-});
 
-// GET /donation/received/:userId
-donationRouter.get("/received/:userId", async (req: Request, res: Response) => {
-  const { userId } = req.params;
-  try {
-    if (userId) {
-      const donation = await prisma.donation.findUnique({
-        where: {
-          userId,
-        },
-      });
-      res.json(donation);
-    }
-  } catch (e) {
-    console.error(e, "aldaa");
-  }
-});
+donationRouter.post("/create-donation", createDonation);
 
-// GET /donation/total-earnings/:userId
-donationRouter.get("/total-earnings/:userId", async (req: Request, res: Response) => {
-  const { userId } = req.params;
-  try {
-    if (userId) {
-      const donation = await prisma.donation.findMany({
-        where: {
-          userId,
-        },
-      });
-      res.json(donation);
-    }
-  } catch (e) {
-    console.error(e, "aldaa");
-  }
-});
 
-// GET /donation/search-donations/:userId
-donationRouter.get("/search-donations/:userId", async (req: Request, res: Response) => {
-  const { userId } = req.params;
-  try {
-    if (userId) {
-      const donation = await prisma.donation.findUnique({
-        where: {
-          userId,
-        },
-      });
-      res.json(donation);
-    }
-  } catch (e) {
-    console.error(e, "aldaa");
-  }
-});
+donationRouter.get("/received/:userId", receivedDonation);
+
+
+donationRouter.get("/total-earnings/:userId", totalDonation);
+
+
+donationRouter.get("/search-donations/:userId", searchDonation);
