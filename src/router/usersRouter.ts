@@ -1,6 +1,7 @@
 import { Request, Response, Router } from "express";
-import { prisma } from "./bankCardRouter";
+
 import bcrypt from "bcrypt";
+import { prisma } from "..";
 
 export const usersRouter = Router();
 
