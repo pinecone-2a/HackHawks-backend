@@ -9,9 +9,9 @@ datasource db {
 
 model user {
   id                String     @id @default(nanoid())
-  email             String
+  email             String @unique
   password          String
-  username          String
+  username          String @unique
   bankCard          bankCard?
   donations         donation[]
   recievedDonations donation[] @relation("donor")
