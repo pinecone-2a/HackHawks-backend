@@ -1,11 +1,13 @@
 import express from "express";
 import { bankCardRouter } from "./router/bankCardRouter";
 import { usersRouter } from "./router/usersRouter";
+import { configDotenv } from "dotenv";
+
 const cors = require("cors");
 const app = express();
 app.use(cors());
 app.use(express.json());
-
+configDotenv();
 app.use("/users", usersRouter);
 app.use("/bankCards", bankCardRouter);
 const port = 4000;
