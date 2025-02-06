@@ -13,7 +13,9 @@ model user {
   password          String
   username          String
   bankCard          bankCard?
-  recievedDonations donation[]
+  donations         donation[]
+  recievedDonations donation[] @relation("donor")
+  sendDonation      donation[] @relation("recipent")
   profile           profile?
 }
 
@@ -22,8 +24,10 @@ model donation {
   amount                  Int
   specialMessage          String
   socialURLOrBuyMeACoffee String
-  donorId                 Int
-  recipentId              Int
+  donorId                 String
+  recipentId              String
+  recipent                user @relation("recipent", fields: [recipentId], references: [id])
+  donor                   user @relation("donor", fields: [donorId], references: [id])
   createdAt               DateTime @default(now())
   updatedAt               DateTime @default(now())
   userId                  String @unique

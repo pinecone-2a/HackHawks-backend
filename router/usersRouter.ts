@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import { prisma } from "./bankCardRouter";
+import bcrypt from "bcrypt";
 
 export const usersRouter = Router();
 
@@ -15,14 +16,17 @@ usersRouter.post("/addnew", async (req: Request, res: Response) => {
       res.json({ message: "user already exist" });
       return;
     }
-    const newUser = await prisma.user.create({
-      data: { email, password, username },
+    const rounds = 10;
+    const encryptedPass = await bcrypt.hash(password, rounds);
+    await prisma.user.create({
+      data: { email, password: encryptedPass, username },
     });
     res.json({ message: "success" });
   } catch (e) {
     console.error(e, "aldaa");
   }
 });
+// login
 usersRouter.get("/", async (req: Request, res: Response) => {
   // const { email, password, username } = req.body;
   try {
