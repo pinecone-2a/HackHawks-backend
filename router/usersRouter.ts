@@ -23,6 +23,7 @@ usersRouter.post("/addnew", async (req: Request, res: Response) => {
     console.error(e, "aldaa");
   }
 });
+// login
 usersRouter.get("/", async (req: Request, res: Response) => {
   // const { email, password, username } = req.body;
   try {
