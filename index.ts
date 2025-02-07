@@ -12,11 +12,8 @@ app.use(express.json());
 configDotenv();
 
 app.use("/users", usersRouter);
-app.use("/profile", profileRouter);
 
-app.get("/", (req: Request, res: Response) => {
-  res.json({ message: "Hello" });
-});
+app.use("/profile", profileRouter);
 
 app.use("/bank-card", bankCardRouter);
 const port = 4000;
