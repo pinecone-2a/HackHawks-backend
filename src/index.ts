@@ -2,10 +2,10 @@ import express from "express";
 import { bankCardRouter } from "./router/bankCardRouter";
 import { configDotenv } from "dotenv";
 import { PrismaClient } from "@prisma/client";
-import cors from "cors";
 import { usersRouter } from "./router/usersRouter";
 import { profileRouter } from "./router/profile";
 
+const cors = require("cors");
 const app = express();
 const PORT = 4000;
 app.use(cors());
