@@ -9,7 +9,7 @@ export const createBankCard = async (req: Request, res: Response) => {
     const newCard = await prisma.bankCard.create({
       data: body,
     });
-    res.json(newCard);
+    res.json({ message: "success" });
   } catch (e) {
     console.error(e, "aldaa");
   }
