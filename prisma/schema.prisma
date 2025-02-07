@@ -40,8 +40,8 @@ model profile {
   about           String
   avatarImage     String
   socialMediaURL  String
-  backgroundImage String
-  successMessage  String
+  backgroundImage String?
+  successMessage  String @default("Thank you good sir")
   userId          String @unique
   user            user   @relation(fields: [userId], references: [id])
 }

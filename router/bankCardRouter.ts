@@ -3,7 +3,8 @@ import { Request, Response, Router } from "express";
 
 export const bankCardRouter = Router();
 export const prisma = new PrismaClient();
-bankCardRouter.post("/addnew", async (req: Request, res: Response) => {
+bankCardRouter.post("/", async (req: Request, res: Response) => {
+  const { userId } = req.params;
   const body = req.body;
   console.log(body);
   try {
