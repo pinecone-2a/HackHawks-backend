@@ -53,6 +53,7 @@ model bankCard {
   lastName   String
   cardNumber String
   expiryDate DateTime
+  CVC        String
   userId     String   @unique
   user       user     @relation(fields: [userId], references: [id])
 }
