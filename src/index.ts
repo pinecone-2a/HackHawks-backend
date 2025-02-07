@@ -4,7 +4,8 @@ import { configDotenv } from "dotenv";
 import { PrismaClient } from "@prisma/client";
 import cors from "cors";
 import { usersRouter } from "./router/usersRouter";
-import { profileRouter } from "./router/Profile";
+import { profileRouter } from "./router/profile";
+
 const app = express();
 const PORT = 4000;
 app.use(cors());
@@ -20,6 +21,8 @@ app.use("/auth", usersRouter);
 app.use("/bank-card", bankCardRouter);
 
 app.use("/profile", profileRouter);
+
+app.use("/users", usersRouter);
 
 // ene hesgiig bitgii oroldooroi hend ch hereggu heseg shvv//
 app.listen(PORT, () => {
