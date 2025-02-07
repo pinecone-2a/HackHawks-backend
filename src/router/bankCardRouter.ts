@@ -1,11 +1,10 @@
+import { PrismaClient } from "@prisma/client";
+import { Request, Response, Router } from "express";
 import { createBankCard } from "../controller/bank/CREATE-bankcard";
-import express, { Router, Request, Response } from "express";
 import { fetchBankCard } from "../controller/bank/GET-bankcard";
 
 export const bankCardRouter = Router();
 
-bankCardRouter.post("/add", createBankCard);
-
-// bankCardRouter.patch("/:userId",  editBankCard);
+bankCardRouter.post("/", createBankCard);
 
 bankCardRouter.get("/", fetchBankCard);

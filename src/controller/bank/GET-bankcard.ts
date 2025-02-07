@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import { prisma } from "../..";
 
-export const fetchBankCard = async (req: Request, res: Response) => {
+export const fetchBankCard = (req: Request, res: Response) => {
+  // const body = req.body
   try {
-    const bankCard = await prisma.bankCard.findMany();
-    res.send("hello");
+    const bankCards = prisma.bankCard.findMany();
+    res.json(bankCards);
   } catch (e) {
-    console.log(e, "fetch error");
+    console.error(e, "aldaa");
   }
 };
