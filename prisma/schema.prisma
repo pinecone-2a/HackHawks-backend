@@ -9,9 +9,9 @@ datasource db {
 
 model user {
   id                String     @id @default(nanoid())
-  email             String
+  email             String @unique
   password          String
-  username          String
+  username          String @unique
   bankCard          bankCard?
   recievedDonations donation[] @relation("donor")
   sendDonation      donation[] @relation("recipent")
@@ -38,8 +38,8 @@ model profile {
   about           String
   avatarImage     String
   socialMediaURL  String
-  backgroundImage String
-  successMessage  String
+  backgroundImage String?
+  successMessage  String @default("Thank you good sir")
   userId          String @unique
   user            user   @relation(fields: [userId], references: [id])
 }
@@ -51,6 +51,7 @@ model bankCard {
   lastName   String
   cardNumber String
   expiryDate DateTime
+  CVC        String
   userId     String   @unique
   user       user     @relation(fields: [userId], references: [id])
 }
