@@ -8,6 +8,16 @@ profileRouter.post("/", async (req: Request, res: Response) => {
   const body = req.body;
   console.log(body);
   try {
+    const existingProfile = await prisma.profile.findFirst({
+      where: {
+        userId: body.userId,
+      },
+    });
+    if (existingProfile) {
+      res.json({ message: "profile already setup" });
+      return;
+    }
+
     const newProfile = await prisma.profile.create({
       data: body,
     });

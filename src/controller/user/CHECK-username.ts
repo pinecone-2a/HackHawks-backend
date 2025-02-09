@@ -10,7 +10,28 @@ export const createUser = async (req: Request, res: Response) => {
       },
     });
     if (existingUser) {
-      res.json({ message: "user already exist", id: existingUser.id });
+      const checkingpass = await bcrypt.compare(
+        password,
+        existingUser.password
+      );
+      if (!checkingpass) {
+        res.json({ message: "user exists, but pass didn't match" });
+        return;
+      }
+      if (email) {
+        const existingProfile = await prisma.profile.findFirst({
+          where: { userId: existingUser.id },
+        });
+        if (existingProfile) {
+          res.json({
+            message: "you have a profile setup",
+            hasProfile: true,
+            id: existingUser.id,
+          });
+          return;
+        }
+      }
+      res.json({ message: "welcome back", id: existingUser.id });
       return;
     }
     const rounds = 10;
