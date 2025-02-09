@@ -1,15 +1,15 @@
 import { Request, Response, Router } from "express";
 
 import { receivedDonation } from "../controller/donation/RECEIVED-donation";
+import { fetchAllDonation } from "../controller/donation/USERID-donation";
 
-import { totalDonation } from "../controller/donation/TOTAL-donation";
 
-const donationRouter = Router();
+export const donationRouter = Router();
 
 donationRouter.post("/create-donation");
 
 donationRouter.get("/received/:userId", receivedDonation);
 
-donationRouter.get("/total-earnings/:userId", totalDonation);
+donationRouter.get("/total-earnings/:userId");
 
-donationRouter.get("/search-donations/:userId");
+donationRouter.get("/", fetchAllDonation);
