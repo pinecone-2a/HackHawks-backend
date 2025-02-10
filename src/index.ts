@@ -3,8 +3,9 @@ import { bankCardRouter } from "./router/bankCardRouter";
 import { configDotenv } from "dotenv";
 import { PrismaClient } from "@prisma/client";
 import { usersRouter } from "./router/usersRouter";
-import { profileRouter } from "./router/profileRouter";
 import cors from "cors";
+import { donationRouter } from "./router/donations";
+import { profileRouter } from "./router/profile";
 const app = express();
 const PORT = 4000;
 app.use(cors());
@@ -13,15 +14,17 @@ configDotenv();
 
 export const prisma = new PrismaClient();
 
-// user backend url //
-app.use("/profile", profileRouter);
-
-// bank card backend url ///
+// bank card backend endpoint ///
 app.use("/bank-card", bankCardRouter);
 
+// profiel backend endpoint //
 app.use("/profile", profileRouter);
 
+// user/auth backend endpoint //
 app.use("/users", usersRouter);
+
+// donation backend endpoint //
+app.use("/donation", donationRouter);
 
 // ene hesgiig bitgii oroldooroi hend ch hereggu heseg shvv//
 app.listen(PORT, () => {

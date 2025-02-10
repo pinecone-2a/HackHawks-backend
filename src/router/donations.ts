@@ -1,15 +1,13 @@
 import { Request, Response, Router } from "express";
-
-import { receivedDonation } from "../controller/donation/RECEIVED-donation";
-
+import { receivedDonation } from "../controller/donation/GET-donation";
 import { totalDonation } from "../controller/donation/TOTAL-donation";
 
-const donationRouter = Router();
+export const donationRouter = Router();
 
 donationRouter.post("/create-donation");
 
-donationRouter.get("/received/:userId", receivedDonation);
+// backend dashboard fetch endpoint (ene hesegt buh donation bolon amount days-eer filterdehed heregleh bolomjtoi)//
+donationRouter.get("/:userId", receivedDonation);
 
-donationRouter.get("/total-earnings/:userId", totalDonation);
-
-donationRouter.get("/search-donations/:userId");
+// backend total donation tootsolson endpoint//
+donationRouter.get("/total");

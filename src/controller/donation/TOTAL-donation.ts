@@ -1,18 +1,21 @@
-import express, { Request, Response } from "express";
-import { prisma } from "../..";
-
-export const totalDonation =  async (req: Request, res: Response) => {
-    const { userId } = req.params;
-    try {
-      if (userId) {
-        const donation = await prisma.donation.findMany({
-          where: {
-            userId,
-          },
-        });
-        res.json(donation);
-      }
-    } catch (e) {
-      console.error(e, "total donation error");
-    }
-  }
+export const totalDonation = async (req: Request, res: Response) => {
+  //   const { id } = req.params;
+  //   const amount = req.query.amount;
+  //   const days = req.query.days;
+  //   const lte = new Date();
+  //   const gte = new Date(lte);
+  //   const todayDay = lte.getMonth();
+  //   gte.setDate(todayDay - Number(days));
+  //   console.log(gte);
+  //   try {
+  //     const donation = await prisma.donation.findMany({
+  //       where: {
+  //         AND: [{ recipentId: id }, amount ? { amount: Number(amount) } : {}],
+  //         createdAt: { gte, lte },
+  //       },
+  //     });
+  //     res.json(donation);
+  //   } catch (e) {
+  //     console.error(e, "received donation error");
+  //   }
+};
