@@ -8,14 +8,7 @@ import cors from "cors";
 import { donationRouter } from "./router/donations";
 const app = express();
 const PORT = process.env.PORT;
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    credentials: true,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    allowedHeaders: "Content-Type, Authorization",
-  })
-);
+app.use(cors());
 app.use(express.json());
 configDotenv();
 

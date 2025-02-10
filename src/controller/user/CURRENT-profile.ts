@@ -13,12 +13,6 @@ export const loginUser = async (req: Request, res: Response) => {
     if (existingUser) {
       const pass = await bcrypt.compare(password, existingUser.password);
       if (pass) {
-        const user = req.body;
-        const accessToken = jwt.sign(user);
-        res.cookie("jwt", accessToken, {
-          httpOnly: true,
-          maxAge: 15000,
-        });
         const existingProfile = await prisma.profile.findFirst({
           where: { userId: existingUser.id },
         });
