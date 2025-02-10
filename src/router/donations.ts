@@ -35,6 +35,7 @@ donationRouter.get("/received/:userId", async (req: Request, res: Response) => {
     console.error(e, "aldaa");
   }
 });
+// ajillaj bga code 3
 
 donationRouter.get(
   "/total-earnings/:userId",
@@ -58,5 +59,27 @@ donationRouter.get(
     }
   }
 );
+// still working on it
+// donationRouter.get("/sum/:userId", async (req: Request, res: Response) => {
+//   const { userId } = req.params;
+//   const today = new Date();
+//   const a = new Date(today);
+//   const day = today.getDate();
+//   const filterDate = new Date();
+//   console.log(filterDate);
+//   try {
+//     const data = await prisma.donation.aggregate({
+//       where: {
+//         donorId: userId,
+//       },
+//       _avg: {
+//         amount: true,
+//       },
+//     });
+//     res.json({ data });
+//   } catch (e) {
+//     console.error(e, "aldaa");
+//   }
+// });
 
 donationRouter.get("/search-donations/:userId");

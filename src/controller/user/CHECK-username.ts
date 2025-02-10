@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { prisma } from "../..";
 import bcrypt from "bcrypt";
+import { configDotenv } from "dotenv";
+configDotenv();
 export const createUser = async (req: Request, res: Response) => {
   const { email, password, username } = req.body;
   try {
@@ -34,8 +36,9 @@ export const createUser = async (req: Request, res: Response) => {
       res.json({ message: "welcome back", id: existingUser.id });
       return;
     }
-    const rounds = 10;
-    const encryptedPass = await bcrypt.hash(password, rounds);
+    const rounds = process.env.SALT;
+    console.log(rounds);
+    const encryptedPass = await bcrypt.hash(password, Number(rounds));
     const newUser = await prisma.user.create({
       data: { email, password: encryptedPass, username },
     });

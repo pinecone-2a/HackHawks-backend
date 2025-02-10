@@ -7,7 +7,7 @@ import { profileRouter } from "./router/profileRouter";
 import cors from "cors";
 import { donationRouter } from "./router/donations";
 const app = express();
-const PORT = 4000;
+const PORT = process.env.PORT;
 app.use(cors());
 app.use(express.json());
 configDotenv();
