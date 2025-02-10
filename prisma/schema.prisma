@@ -21,8 +21,8 @@ model user {
 model donation {
   id                      String   @id @default(nanoid())
   amount                  Int
-  specialMessage          String
-  socialURLOrBuyMeACoffee String
+  specialMessage          String @default("Thank you, good sir")
+  socialURLOrBuyMeACoffee String @default("https://buymeacoffee.com/glpzghoo")
   donorId                 String
   recipentId              String
   recipent                user @relation("recipent", fields: [recipentId], references: [id])

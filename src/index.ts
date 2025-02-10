@@ -5,6 +5,7 @@ import { PrismaClient } from "@prisma/client";
 import { usersRouter } from "./router/usersRouter";
 import { profileRouter } from "./router/profileRouter";
 import cors from "cors";
+import { donationRouter } from "./router/donations";
 const app = express();
 const PORT = 4000;
 app.use(cors());
@@ -23,6 +24,7 @@ app.use("/profile", profileRouter);
 
 app.use("/users", usersRouter);
 
+app.use("/donation", donationRouter);
 // ene hesgiig bitgii oroldooroi hend ch hereggu heseg shvv//
 app.listen(PORT, () => {
   console.log(`it's on http://localhost:${PORT}`);
