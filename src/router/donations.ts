@@ -1,7 +1,6 @@
 import { Request, Response, Router } from "express";
 import { receivedDonation } from "../controller/donation/GET-donation";
 
-
 export const donationRouter = Router();
 
 donationRouter.post("/create-donation");
@@ -10,4 +9,4 @@ donationRouter.post("/create-donation");
 donationRouter.get("/:userId", receivedDonation);
 
 // backend total donation tootsolson endpoint//
-donationRouter.get("/total");
+donationRouter.get("/total/:recipentId");

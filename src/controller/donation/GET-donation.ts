@@ -2,29 +2,33 @@ import express, { Request, Response } from "express";
 import { prisma } from "../..";
 
 export const receivedDonation = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const { userId } = req.params;
   const amount = req.query.amount;
-  const days = req.query.days;
+  const days = req.query.days ? req.query.days : 7;
   const lte = new Date();
   const gte = new Date(lte);
 
   const todayDay = lte.getMonth();
   gte.setDate(todayDay - Number(days));
-  console.log(gte);
 
   try {
     const donation = await prisma.donation.findMany({
       where: {
-        AND: [{ recipentId: id }, amount ? { amount: Number(amount) } : {}],
+        AND: [{ recipentId: userId }, amount ? { amount: Number(amount) } : {}],
         createdAt: { gte, lte },
       },
     });
-    const totalEarnings = donation.reduce((acc, donation)=>{
-      return acc+donation.amount;
-    },0)
+    // aggregate ashiglah
+    const totalEarnings = await prisma.donation.aggregate({
+      where: {
+        AND: [{ recipentId: userId }, { createdAt: { gte, lte } }, amount ? { amount: Number(amount) } : {}],
+      },
+      _sum: {
+        amount: true,
+      },
+    });
     res.json({ donation, totalEarnings });
   } catch (e) {
     console.error(e, "received donation error");
   }
 };
-

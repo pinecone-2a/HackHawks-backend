@@ -10,10 +10,7 @@ export const createUser = async (req: Request, res: Response) => {
       },
     });
     if (existingUser) {
-      const checkingpass = await bcrypt.compare(
-        password,
-        existingUser.password
-      );
+      const checkingpass = await bcrypt.compare(password, existingUser.password);
       if (!checkingpass) {
         res.json({ message: "user exists, but pass didn't match" });
         return;
