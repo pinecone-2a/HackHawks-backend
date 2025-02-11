@@ -7,7 +7,8 @@ import { profileRouter } from "./router/profileRouter";
 import cors from "cors";
 import { donationRouter } from "./router/donations";
 const app = express();
-const PORT = 4000;
+const bcrypt = require("bcryptjs")
+
 app.use(cors());
 app.use(express.json());
 configDotenv();
@@ -26,7 +27,10 @@ app.use("/users", usersRouter);
 
 app.use("/donation", donationRouter)
 
+
+
+
 // ene hesgiig bitgii oroldooroi hend ch hereggu heseg shvv//
-app.listen(PORT, () => {
-  console.log(`it's on http://localhost:${PORT}`);
+app.listen(process.env.PORT, () => {
+  console.log(`it's on http://localhost:${process.env.PORT}`);
 });
