@@ -4,6 +4,7 @@ import { configDotenv } from "dotenv";
 import { PrismaClient } from "@prisma/client";
 import { usersRouter } from "./router/usersRouter";
 import cors from "cors";
+require("dotenv").config();
 import { donationRouter } from "./router/donations";
 <<<<<<< HEAD
 import { profileRouter } from "./router/profile";
@@ -11,9 +12,13 @@ import { profileRouter } from "./router/profile";
 >>>>>>> main
 const app = express();
 const PORT = process.env.PORT;
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN,
+    credentials: true,
+  })
+);
 app.use(express.json());
-configDotenv();
 
 export const prisma = new PrismaClient();
 

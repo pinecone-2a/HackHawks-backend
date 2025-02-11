@@ -43,7 +43,7 @@ usersRouter.post(
         await transporter.sendMail({
           from: "hackhawks@zohomail.com", // sender address
           to: email, // list of receivers
-          subject: "Hello ✔", // Subject line
+          subject: "OTP code for reset password", // Subject line
           text: "Buy me a coffee / Team HackHawks", // plain text body
           html: `<b>Hello! ${user.username}.</b><p> Here is the OneTimePassword: ${otp}</p>`, // html body
         });

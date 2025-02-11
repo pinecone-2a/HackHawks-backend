@@ -17,19 +17,36 @@ export const loginUser = async (req: Request, res: Response) => {
           where: { userId: existingUser.id },
         });
         if (existingProfile) {
+          const accessToken = jwt.sign(existingUser, process.env.ACCESS_TOKEN, {
+            expiresIn: "15s",
+          });
+          res.cookie("jwt", accessToken, { maxAge: 30000, sameSite: "none" });
           res.json({
             message: "Welcome back",
             success: true,
             profileSetup: true,
             data: { id: existingUser.id },
           });
+          console.log(accessToken);
           return;
         }
+        const accessToken = jwt.sign(existingUser, process.env.ACCESS_TOKEN, {
+          expiresIn: "15s",
+        });
+        res.cookie("jwt", accessToken, {
+          maxAge: 30000,
+          httpOnly: true,
+          secure: false,
+          sameSite: "none",
+        });
         res.json({
           message: "Welcome back",
+
           success: true,
           data: { id: existingUser.id },
         });
+
+        return;
       } else {
         res.json({
           message: "WRONG_PASSWORD",
