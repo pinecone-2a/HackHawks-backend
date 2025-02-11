@@ -19,8 +19,12 @@ export const receivedDonation = async (req: Request, res: Response) => {
         createdAt: { gte, lte },
       },
     });
-    res.json(donation);
+    const totalEarnings = donation.reduce((acc, donation)=>{
+      return acc+donation.amount;
+    },0)
+    res.json({ donation, totalEarnings });
   } catch (e) {
     console.error(e, "received donation error");
   }
 };
+
