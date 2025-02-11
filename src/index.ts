@@ -6,10 +6,8 @@ import { usersRouter } from "./router/usersRouter";
 import cors from "cors";
 require("dotenv").config();
 import { donationRouter } from "./router/donations";
-<<<<<<< HEAD
 import { profileRouter } from "./router/profile";
-=======
->>>>>>> main
+
 const app = express();
 const PORT = process.env.PORT;
 app.use(
@@ -31,13 +29,9 @@ app.use("/profile", profileRouter);
 // user/auth backend endpoint //
 app.use("/users", usersRouter);
 
-<<<<<<< HEAD
 // donation backend endpoint //
 app.use("/donation", donationRouter);
 
-=======
-app.use("/donation", donationRouter);
->>>>>>> main
 // ene hesgiig bitgii oroldooroi hend ch hereggu heseg shvv//
 app.listen(PORT, () => {
   console.log(`it's on http://localhost:${PORT}`);
