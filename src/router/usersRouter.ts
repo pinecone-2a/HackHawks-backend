@@ -27,7 +27,7 @@ usersRouter.post("/auth/sign-in", loginUser);
 usersRouter.post("/auth/:username", checkUsername);
 
 usersRouter.post(
-  "/auth/reset-password",
+  "/auth/reset/password",
   async (req: Request, res: Response) => {
     const { email } = req.body;
     // res.json({ email });
@@ -63,32 +63,35 @@ usersRouter.post(
     }
   }
 );
-usersRouter.post("/auth/verify-otp", async (req: Request, res: Response) => {
-  const { otp, email, id } = req.body;
-  // res.json({ email });
-  console.log(req.body);
-  try {
-    const user = await prisma.otp.findUnique({
-      where: {
-        id,
-      },
-    });
-    if (user) {
-      if (user.opt === Number(otp) && user.email === email) {
-        res.json({ message: "OTP_MATCHED", success: true });
+usersRouter.post(
+  "/auth/reset/verify-otp",
+  async (req: Request, res: Response) => {
+    const { otp, email, id } = req.body;
+    // res.json({ email });
+    console.log(req.body);
+    try {
+      const user = await prisma.otp.findUnique({
+        where: {
+          id,
+        },
+      });
+      if (user) {
+        if (user.opt === Number(otp) && user.email === email) {
+          res.json({ message: "OTP_MATCHED", success: true });
+          return;
+        }
+        res.json({ success: false, message: "OTP_NOT_MATCHED" });
         return;
       }
-      res.json({ success: false, message: "OTP_NOT_MATCHED" });
+      res.json({ success: false, message: "USER_NOT_FOUND" });
       return;
+    } catch (e) {
+      console.error(e, "aldaa");
     }
-    res.json({ success: false, message: "USER_NOT_FOUND" });
-    return;
-  } catch (e) {
-    console.error(e, "aldaa");
   }
-});
+);
 usersRouter.post(
-  "/auth/change-password",
+  "/auth/reset/change-password",
   async (req: Request, res: Response) => {
     const { password, email } = req.body;
     // res.json({ email });
