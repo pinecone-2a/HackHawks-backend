@@ -55,3 +55,9 @@ model bankCard {
   userId     String   @unique
   user       user     @relation(fields: [userId], references: [id])
 }
+
+model otp {
+  id String @id @default(nanoid())
+  opt Int 
+email String
+}

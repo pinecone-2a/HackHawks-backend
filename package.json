@@ -11,6 +11,7 @@
   "description": "",
   "devDependencies": {
     "@types/node": "^22.13.1",
+    "@types/nodemailer": "^6.4.17",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "cloudinary": "^2.5.1",
@@ -31,6 +32,7 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "nanoid": "^5.0.9",
+    "nodemailer": "^6.10.0",
     "ts-node": "^10.9.2",
     "yarn": "^1.22.22"
   }
