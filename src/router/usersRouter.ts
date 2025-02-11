@@ -45,7 +45,7 @@ usersRouter.post(
           to: email, // list of receivers
           subject: "Hello ✔", // Subject line
           text: "Buy me a coffee / Team HackHawks", // plain text body
-          html: `<b>Hello! ${user.username}.</b><p> Here is the OneTimePassword ${otp}</p>`, // html body
+          html: `<b>Hello! ${user.username}.</b><p> Here is the OneTimePassword: ${otp}</p>`, // html body
         });
         const newOtp = await prisma.otp.create({
           data: {
@@ -68,7 +68,6 @@ usersRouter.post(
   async (req: Request, res: Response) => {
     const { otp, email, id } = req.body;
     // res.json({ email });
-    console.log(req.body);
     try {
       const user = await prisma.otp.findUnique({
         where: {
@@ -95,7 +94,6 @@ usersRouter.post(
   async (req: Request, res: Response) => {
     const { password, email } = req.body;
     // res.json({ email });
-    console.log(req.body);
     try {
       const hashedPass = await bcrypt.hash(password, Number(process.env.SALT));
       const user = await prisma.user.update({
@@ -107,9 +105,11 @@ usersRouter.post(
         },
       });
       if (user) {
-        res.json({ user, message: "amjilttai" });
+        res.json({
+          message: "amjilttai",
+          code: "PASS_CHANGED_SUCCESSFULLY",
+        });
       }
-      console.log(user);
     } catch (e) {
       console.error(e, "aldaa");
     }
