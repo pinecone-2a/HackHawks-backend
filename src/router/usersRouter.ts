@@ -5,7 +5,11 @@ import { generateToken, verifyToken } from "../controller/authorization/verify";
 import nodemailer from "nodemailer";
 import { prisma } from "..";
 import bcrypt from "bcrypt";
-import { checkUsername } from "../controller/user/check-username";
+import { checkUsername } from "../controller/user/CHECK-username";
+import { updatePassword } from "../controller/user/UPDATEPASS-user";
+
+
+
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -25,6 +29,9 @@ usersRouter.post("/addnew", createUser);
 usersRouter.post("/auth/sign-in", loginUser);
 
 usersRouter.post("/auth/:username", checkUsername);
+
+// password uptade hiih endpoint
+usersRouter.patch("/update/:userId", updatePassword)
 
 usersRouter.post(
   "/auth/reset/password",
