@@ -13,8 +13,8 @@ model user {
   password          String
   username          String     @unique
   bankCard          bankCard?
-  recievedDonations donation[] @relation("donor")
-  sendDonation      donation[] @relation("recipent")
+  recievedDonations donation[] @relation("recipent")
+  sendDonation      donation[] @relation("donor")
   profile           profile?
 }
 

@@ -8,6 +8,7 @@ require("dotenv").config();
 import { donationRouter } from "./router/donations";
 import { profileRouter } from "./router/profile";
 import cookieParser from "cookie-parser";
+import { testingRouter } from "./router/testing";
 const app = express();
 
 const PORT = process.env.PORT;
@@ -33,6 +34,9 @@ app.use("/users", usersRouter);
 
 // donation backend endpoint //
 app.use("/donation", donationRouter);
+
+// testing purposes
+app.use("/testing", testingRouter);
 
 // ene hesgiig bitgii oroldooroi hend ch hereggu heseg shvv//
 app.listen(PORT, () => {

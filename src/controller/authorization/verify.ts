@@ -1,22 +1,23 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { CustomRequest } from "../../router/usersRouter";
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 // ajillaj bga
-export const verifyToken = async (req: CustomRequest, res: Response) => {
+export const verifyToken = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   const accessToken = req.cookies.Authorization;
 
   try {
     if (accessToken) {
       const verifyToken = jwt.verify(accessToken, process.env.ACCESS_TOKEN);
       if (verifyToken) {
-        res.json({
-          success: true,
-          message: "success",
-          data: { user: verifyToken },
-        });
-        console.log(verifyToken);
+        req.userId = verifyToken.id;
+        // console.log(verifyToken);
+        next();
         return;
       }
       res.json({

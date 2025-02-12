@@ -137,4 +137,18 @@ usersRouter.post(
 
 // Testing purposes
 
-usersRouter.get("/auth/test/login", verifyToken);
+usersRouter.get("/auth", verifyToken);
+
+usersRouter.get("/auth/testing", async (req: CustomRequest, res: Response) => {
+  const thirtyDaysAgo = new Date(new Date().setDate(new Date().getDate() - 30));
+  const lasmonth = await prisma.donation.findMany({
+    where: {
+      createdAt: { gte: thirtyDaysAgo },
+    },
+    include: {
+      recipent: true,
+      donor: true,
+    },
+  });
+  res.json({ lasmonth });
+});
