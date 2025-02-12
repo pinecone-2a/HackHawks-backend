@@ -2,8 +2,9 @@ import { Request, Response } from "express";
 import { prisma } from "../..";
 import bcrypt from "bcrypt";
 import { configDotenv } from "dotenv";
+import { CustomRequest } from "../../router/usersRouter";
 configDotenv();
-export const createUser = async (req: Request, res: Response) => {
+export const createUser = async (req: CustomRequest, res: Response) => {
   const { email, password, username } = req.body;
   try {
     const existingUser = await prisma.user.findFirst({

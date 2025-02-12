@@ -1,6 +1,7 @@
 import { Request, Response, Router } from "express";
 import { prisma } from "../..";
-export const checkUsername = async (req: Request, res: Response) => {
+import { CustomRequest } from "../../router/usersRouter";
+export const checkUsername = async (req: CustomRequest, res: Response) => {
   const { username } = req.params;
   if (username.length < 6) {
     res.json({ message: "username is too short", no: "no" });

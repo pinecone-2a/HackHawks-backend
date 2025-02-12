@@ -9,7 +9,9 @@ import { checkUsername } from "../controller/user/CHECK-username";
 import { updatePassword } from "../controller/user/UPDATEPASS-user";
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-
+export type CustomRequest = Request & {
+  userId?: string;
+};
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
@@ -26,7 +28,7 @@ usersRouter.post("/addnew", createUser);
 usersRouter.post("/auth/sign-in", loginUser);
 usersRouter.post(
   "/auth/dashboard/:userId",
-  async (req: Request, res: Response) => {
+  async (req: CustomRequest, res: Response) => {
     const { userId } = req.params;
     try {
       const user = await prisma.user.findUnique({
@@ -50,7 +52,7 @@ usersRouter.patch("/update/:userId", updatePassword);
 
 usersRouter.post(
   "/auth/reset/password",
-  async (req: Request, res: Response) => {
+  async (req: CustomRequest, res: Response) => {
     const { email } = req.body;
     // res.json({ email });
     try {
@@ -87,7 +89,7 @@ usersRouter.post(
 );
 usersRouter.post(
   "/auth/reset/change-password",
-  async (req: Request, res: Response) => {
+  async (req: CustomRequest, res: Response) => {
     const { otp, email, id, password } = req.body;
     // res.json({ email });
     try {

@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
+import { CustomRequest } from "../../router/usersRouter";
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 // ajillaj bga
-export const verifyToken = async (req: Request, res: Response) => {
+export const verifyToken = async (req: CustomRequest, res: Response) => {
   const accessToken = req.cookies.Authorization;
 
   try {

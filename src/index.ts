@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request } from "express";
 import { bankCardRouter } from "./router/bankCardRouter";
 import { configDotenv } from "dotenv";
 import { PrismaClient } from "@prisma/client";

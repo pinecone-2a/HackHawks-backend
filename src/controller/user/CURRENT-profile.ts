@@ -1,8 +1,9 @@
 import { Request, Response, Router } from "express";
 import { prisma } from "../..";
 import bcrypt from "bcrypt";
+import { CustomRequest } from "../../router/usersRouter";
 const jwt = require("jsonwebtoken");
-export const loginUser = async (req: Request, res: Response) => {
+export const loginUser = async (req: CustomRequest, res: Response) => {
   const { email, password } = req.body;
   try {
     const existingUser = await prisma.user.findFirst({
