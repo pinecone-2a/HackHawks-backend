@@ -110,5 +110,9 @@ usersRouter.post("/auth/reset/change-password", async (req: Request, res: Respon
 // Testing purposes
 
 usersRouter.post("/auth/test/login", generateToken);
+usersRouter.get("/auth/test/userinfo", async (req: Request, res: Response) => {
+  console.log(req.headers.jwt);
+  res.json({ message: "hi" });
+});
 
 usersRouter.get("/auth/test/login", verifyToken);
