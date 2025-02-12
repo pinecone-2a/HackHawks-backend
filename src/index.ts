@@ -1,14 +1,15 @@
-import express, { Request } from "express";
+import express, { Request, Response } from "express";
 import { bankCardRouter } from "./router/bankCardRouter";
 import { configDotenv } from "dotenv";
 import { PrismaClient } from "@prisma/client";
-import { usersRouter } from "./router/usersRouter";
+import { CustomRequest, usersRouter } from "./router/usersRouter";
 import cors from "cors";
 require("dotenv").config();
 import { donationRouter } from "./router/donations";
 import { profileRouter } from "./router/profile";
 import cookieParser from "cookie-parser";
 import { testingRouter } from "./router/testing";
+import jwt from "jsonwebtoken";
 const app = express();
 
 const PORT = process.env.PORT;
@@ -35,6 +36,48 @@ app.use("/users", usersRouter);
 // donation backend endpoint //
 app.use("/donation", donationRouter);
 
+// refresh token - testing
+
+app.get("/", async (req: CustomRequest, res: Response) => {
+  const refreshToken = req.cookies.RefreshToken;
+  console.log(refreshToken);
+  try {
+    if (!refreshToken) {
+      res.json({ success: false, code: "NO_TOKEN_PROVIDED" });
+      return;
+    }
+    const refresh = process.env.REFRESH_TOKEN;
+    if (refresh) {
+      const verify = jwt.verify(refreshToken, refresh) as { id: string };
+
+      if (verify) {
+        const user = await prisma.user.findUnique({
+          where: {
+            id: verify.id,
+          },
+        });
+        if (user) {
+          const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN!, {
+            expiresIn: "5m",
+          });
+          res.cookie("Authorization", accessToken, {
+            httpOnly: true,
+            sameSite: "strict",
+            maxAge: 300000,
+            secure: true,
+          });
+          res.json({ success: true, code: "TOKEN_REFRESHED_SUCCESSFULLY" });
+          console.log(accessToken);
+          return;
+        }
+        res.json({ success: false, message: "User not found" });
+      }
+    }
+    res.json({ success: false, code: "NO_TOKEN_PROVIDED" });
+  } catch (e) {
+    console.error(e, "error");
+  }
+});
 // testing purposes
 app.use("/testing", testingRouter);
 

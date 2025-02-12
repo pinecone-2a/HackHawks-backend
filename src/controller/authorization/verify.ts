@@ -16,6 +16,7 @@ export const verifyToken = async (
       const verifyToken = jwt.verify(accessToken, process.env.ACCESS_TOKEN);
       if (verifyToken) {
         req.userId = verifyToken.id;
+        req.email = verifyToken.email;
         // console.log(verifyToken);
         next();
         return;
@@ -27,14 +28,15 @@ export const verifyToken = async (
       });
       return;
     }
+    res.json({ success: false, message: "JWT expired", code: "JWT_EXPIRED" });
+    return;
+  } catch (e) {
+    console.error(e);
+
     res.json({
       success: false,
       message: "no token provided",
       code: "NO_TOKEN_PROVIDED",
     });
-    return;
-  } catch (e) {
-    console.error(e);
-    res.json({ success: false, message: "JWT expired", code: "JWT_EXPIRED" });
   }
 };

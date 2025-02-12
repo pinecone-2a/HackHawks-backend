@@ -21,9 +21,24 @@ export const loginUser = async (req: CustomRequest, res: Response) => {
           const accessToken = jwt.sign(existingUser, process.env.ACCESS_TOKEN, {
             expiresIn: "5m",
           });
+          const refreshToken = jwt.sign(
+            existingUser,
+            process.env.REFRESH_TOKEN,
+            {
+              expiresIn: "4h",
+            }
+          );
           res.cookie("Authorization", accessToken, {
+            httpOnly: true,
             maxAge: 300000,
             sameSite: "strict",
+            secure: true,
+          });
+          res.cookie("RefreshToken", refreshToken, {
+            httpOnly: true,
+            maxAge: 4 * 60 * 60 * 1000,
+            sameSite: "strict",
+            secure: true,
           });
           res.json({
             message: "Welcome back",
