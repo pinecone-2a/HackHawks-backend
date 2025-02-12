@@ -2,25 +2,37 @@ import { Request, Response } from "express";
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-export const generateToken = async (req: Request, res: Response) => {
-  const user = req.body;
-  const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN, {
-    expiresIn: "15s",
-  });
-  res.cookie("jwt", accessToken, {
-    httpOnly: true,
-    secure: false,
-    sameSite: "lax",
-    maxAge: 15000,
-  });
-  res.json({ token: accessToken });
-};
+// ajillaj bga
 export const verifyToken = async (req: Request, res: Response) => {
+  const accessToken = req.cookies.Authorization;
+
   try {
-    const user = req.get("session");
-    const accessToken = jwt.verify(user, process.env.ACCESS_TOKEN);
-    res.json({ message: accessToken });
+    if (accessToken) {
+      const verifyToken = jwt.verify(accessToken, process.env.ACCESS_TOKEN);
+      if (verifyToken) {
+        res.json({
+          success: true,
+          message: "success",
+          data: { user: verifyToken },
+        });
+        console.log(verifyToken);
+        return;
+      }
+      res.json({
+        success: false,
+        message: "invalid token",
+        code: "INVALID_TOKEN",
+      });
+      return;
+    }
+    res.json({
+      success: false,
+      message: "no token provided",
+      code: "NO_TOKEN_PROVIDED",
+    });
+    return;
   } catch (e) {
-    console.error("aldaa", e);
+    console.error(e);
+    res.json({ success: false, message: "JWT expired", code: "JWT_EXPIRED" });
   }
 };

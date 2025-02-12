@@ -1,13 +1,12 @@
 import { Request, Response, Router } from "express";
 import { loginUser } from "../controller/user/CURRENT-profile";
 import { createUser } from "../controller/user/CREATE-account";
-import { generateToken, verifyToken } from "../controller/authorization/verify";
+import { verifyToken } from "../controller/authorization/verify";
 import nodemailer from "nodemailer";
 import { prisma } from "..";
 import bcrypt from "bcrypt";
 import { checkUsername } from "../controller/user/CHECK-username";
 import { updatePassword } from "../controller/user/UPDATEPASS-user";
-
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -135,11 +134,5 @@ usersRouter.post(
 );
 
 // Testing purposes
-
-usersRouter.post("/auth/test/login", generateToken);
-usersRouter.get("/auth/test/userinfo", async (req: Request, res: Response) => {
-  console.log(req.headers.jwt);
-  res.json({ message: "hi" });
-});
 
 usersRouter.get("/auth/test/login", verifyToken);

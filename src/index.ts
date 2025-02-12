@@ -7,16 +7,18 @@ import cors from "cors";
 require("dotenv").config();
 import { donationRouter } from "./router/donations";
 import { profileRouter } from "./router/profile";
-
+import cookieParser from "cookie-parser";
 const app = express();
+
 const PORT = process.env.PORT;
+app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,
     credentials: true,
   })
 );
-app.use(express.json());
 
 export const prisma = new PrismaClient();
 

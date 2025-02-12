@@ -18,9 +18,12 @@ export const loginUser = async (req: Request, res: Response) => {
         });
         if (existingProfile) {
           const accessToken = jwt.sign(existingUser, process.env.ACCESS_TOKEN, {
-            expiresIn: "15s",
+            expiresIn: "5m",
           });
-          res.cookie("jwt", accessToken, { maxAge: 30000, sameSite: "strict" });
+          res.cookie("Authorization", accessToken, {
+            maxAge: 300000,
+            sameSite: "strict",
+          });
           res.json({
             message: "Welcome back",
             success: true,
@@ -33,7 +36,7 @@ export const loginUser = async (req: Request, res: Response) => {
         const accessToken = jwt.sign(existingUser, process.env.ACCESS_TOKEN, {
           expiresIn: "15s",
         });
-        res.cookie("jwt", accessToken, {
+        res.cookie("Authorization", accessToken, {
           maxAge: 30000,
           httpOnly: true,
           secure: false,
