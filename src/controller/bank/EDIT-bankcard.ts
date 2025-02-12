@@ -1,33 +1,31 @@
-import { Request, Response } from "express"
-import { prisma } from "../.."
-export const editBankCard = async(req:Request, res:Response) =>{
-const {userId} = req.params
-const {country, firstName, lastName, cardNumber, expiryDate} = req.body
+import { Request, Response } from "express";
+import { prisma } from "../..";
+export const editBankCard = async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  const { country, firstName, lastName, cardNumber, expiryDate } = req.body;
 
-try{
-   
+  try {
     const updatedBankCard = await prisma.bankCard.update({
-        where:{
-            userId: userId
-        },
-        data: {
-            country, firstName, lastName, cardNumber, expiryDate
-        }
-    })
+      where: {
+        userId: userId,
+      },
+      data: {
+        country,
+        firstName,
+        lastName,
+        cardNumber,
+        expiryDate,
+      },
+    });
     res.json({
-        status:200,
-        code:"UPDATE_CARD_SUCCESSFULL",
+      status: 200,
+      code: "UPDATE_CARD_SUCCESSFULL",
 
-        message:"card informations updated succefully",
-        success:true,
-        data:updatedBankCard
-    })
-}
-
-catch(e){
-    console.log(e, "error while updating bankcard")
-}
-
-
-
-}
+      message: "card informations updated succefully",
+      success: true,
+      data: updatedBankCard,
+    });
+  } catch (e) {
+    console.log(e, "error while updating bankcard");
+  }
+};

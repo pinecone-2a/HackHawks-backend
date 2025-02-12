@@ -4,15 +4,13 @@ import { createBankCard } from "../controller/bank/CREATE-bankcard";
 import { fetchBankCard } from "../controller/bank/GET-bankcard";
 import { editBankCard } from "../controller/bank/EDIT-bankcard";
 
-
 export const bankCardRouter = Router();
 
 //banknii card uusgeh endpoint
-bankCardRouter.post("/", createBankCard);
+bankCardRouter.post("/addnew-card", createBankCard);
 
 //banknii cardniihaa medeelliig duudaj awah endpoint
-bankCardRouter.get("/", fetchBankCard);
+bankCardRouter.get("/:userId", fetchBankCard);
 
 // banknii cardniihaa medeelliig oorchloh endpoint
-bankCardRouter.put("/:userId", editBankCard)
-
+bankCardRouter.put("/:userId", editBankCard);
