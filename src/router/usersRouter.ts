@@ -6,13 +6,8 @@ import nodemailer from "nodemailer";
 import { prisma } from "..";
 import bcrypt from "bcrypt";
 import { checkUsername } from "../controller/user/CHECK-username";
-<<<<<<< HEAD
 import { updatePassword } from "../controller/user/UPDATEPASS-user";
 
-
-
-=======
->>>>>>> main
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -34,92 +29,83 @@ usersRouter.post("/auth/sign-in", loginUser);
 usersRouter.post("/auth/:username", checkUsername);
 
 // password uptade hiih endpoint
-usersRouter.patch("/update/:userId", updatePassword)
+usersRouter.patch("/update/:userId", updatePassword);
 
-usersRouter.post(
-  "/auth/reset/password",
-  async (req: Request, res: Response) => {
-    const { email } = req.body;
-    // res.json({ email });
-    try {
-      const user = await prisma.user.findUnique({
-        where: {
+usersRouter.post("/auth/reset/password", async (req: Request, res: Response) => {
+  const { email } = req.body;
+  // res.json({ email });
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    if (user) {
+      const otp = Math.floor(Math.random() * 899999999 + 100000000);
+
+      await transporter.sendMail({
+        from: "Team HackHawks", // sender address
+        to: email, // list of receivers
+        subject: "OTP code for reset password", // Subject line
+        text: "Buy me a coffee / Team HackHawks", // plain text body
+        html: `<b>Hello! ${user.username}.</b><p> Here is the OneTimePassword: ${otp}</p>`, // html body
+      });
+      const newOtp = await prisma.otp.create({
+        data: {
           email,
+          opt: otp,
         },
       });
-      if (user) {
-        const otp = Math.floor(Math.random() * 899999999 + 100000000);
-
-        await transporter.sendMail({
-          from: "Team HackHawks", // sender address
-          to: email, // list of receivers
-          subject: "OTP code for reset password", // Subject line
-          text: "Buy me a coffee / Team HackHawks", // plain text body
-          html: `<b>Hello! ${user.username}.</b><p> Here is the OneTimePassword: ${otp}</p>`, // html body
-        });
-        const newOtp = await prisma.otp.create({
-          data: {
+      res.json({ success: true, id: newOtp.id });
+      return;
+    }
+    res.json({ success: false });
+    return;
+  } catch (e) {
+    console.error(e, "aldaa");
+  }
+});
+usersRouter.post("/auth/reset/change-password", async (req: Request, res: Response) => {
+  const { otp, email, id, password } = req.body;
+  // res.json({ email });
+  try {
+    const user = await prisma.otp.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (user) {
+      if (user.opt === Number(otp) && user.email === email) {
+        const hashedPass = await bcrypt.hash(password, Number(process.env.SALT));
+        await prisma.user.update({
+          where: {
             email,
-            opt: otp,
+          },
+          data: {
+            password: hashedPass,
           },
         });
-        res.json({ success: true, id: newOtp.id });
+        res.json({
+          message: "OTP_MATCHED",
+          success: true,
+          code: "PASS_CHANGED_SUCCESSFULLY",
+        });
+        await prisma.otp.delete({
+          where: {
+            id,
+          },
+        });
         return;
       }
-      res.json({ success: false });
+      res.json({ success: false, message: "OTP_NOT_MATCHED" });
       return;
-    } catch (e) {
-      console.error(e, "aldaa");
     }
+    res.json({ success: false, message: "USER_NOT_FOUND" });
+    return;
+  } catch (e) {
+    console.error(e, "aldaa");
   }
-);
-usersRouter.post(
-  "/auth/reset/change-password",
-  async (req: Request, res: Response) => {
-    const { otp, email, id, password } = req.body;
-    // res.json({ email });
-    try {
-      const user = await prisma.otp.findUnique({
-        where: {
-          id,
-        },
-      });
-      if (user) {
-        if (user.opt === Number(otp) && user.email === email) {
-          const hashedPass = await bcrypt.hash(
-            password,
-            Number(process.env.SALT)
-          );
-          await prisma.user.update({
-            where: {
-              email,
-            },
-            data: {
-              password: hashedPass,
-            },
-          });
-          res.json({
-            message: "OTP_MATCHED",
-            success: true,
-            code: "PASS_CHANGED_SUCCESSFULLY",
-          });
-          await prisma.otp.delete({
-            where: {
-              id,
-            },
-          });
-          return;
-        }
-        res.json({ success: false, message: "OTP_NOT_MATCHED" });
-        return;
-      }
-      res.json({ success: false, message: "USER_NOT_FOUND" });
-      return;
-    } catch (e) {
-      console.error(e, "aldaa");
-    }
-  }
-);
+});
 
 // Testing purposes
 
