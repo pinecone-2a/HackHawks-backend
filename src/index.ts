@@ -9,6 +9,7 @@ import { donationRouter } from "./router/donations";
 import { profileRouter } from "./router/profile";
 
 const app = express();
+app.use(express.json());
 const PORT = process.env.PORT;
 app.use(
   cors({
@@ -16,7 +17,7 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json());
+
 
 export const prisma = new PrismaClient();
 
