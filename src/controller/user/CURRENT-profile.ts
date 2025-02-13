@@ -50,13 +50,22 @@ export const loginUser = async (req: CustomRequest, res: Response) => {
           return;
         }
         const accessToken = jwt.sign(existingUser, process.env.ACCESS_TOKEN, {
-          expiresIn: "15s",
+          expiresIn: "1h",
+        });
+        const refreshToken = jwt.sign(existingUser, process.env.REFRESH_TOKEN, {
+          expiresIn: "4h",
         });
         res.cookie("Authorization", accessToken, {
-          maxAge: 30000,
+          maxAge: 60 * 60 * 1000,
           httpOnly: true,
-          secure: false,
-          sameSite: "none",
+          secure: true,
+          sameSite: "strict",
+        });
+        res.cookie("RefreshToken", refreshToken, {
+          httpOnly: true,
+          maxAge: 4 * 60 * 60 * 1000,
+          sameSite: "strict",
+          secure: true,
         });
         res.json({
           message: "Welcome back",
