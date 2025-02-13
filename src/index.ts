@@ -8,7 +8,8 @@ require("dotenv").config();
 import { donationRouter } from "./router/donations";
 import { profileRouter } from "./router/profile";
 import cookieParser from "cookie-parser";
-import { testingRouter } from "./router/testing";
+import { LoggedUserRouter } from "./router/testing";
+import session from "express-session";
 import jwt from "jsonwebtoken";
 const app = express();
 
@@ -36,8 +37,10 @@ app.use("/users", usersRouter);
 // donation backend endpoint //
 app.use("/donation", donationRouter);
 
-// refresh token - testing
+// Logged user info - do not touch
+app.use("/dashbordInfo", LoggedUserRouter);
 
+// refresh token - testing
 app.get("/", async (req: CustomRequest, res: Response) => {
   const refreshToken = req.cookies.RefreshToken;
   console.log(refreshToken);
@@ -79,7 +82,6 @@ app.get("/", async (req: CustomRequest, res: Response) => {
   }
 });
 // testing purposes
-app.use("/testing", testingRouter);
 
 // ene hesgiig bitgii oroldooroi hend ch hereggu heseg shvv//
 app.listen(PORT, () => {
