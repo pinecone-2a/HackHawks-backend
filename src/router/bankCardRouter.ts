@@ -8,7 +8,7 @@ import { editBankCard } from "../controller/bank/EDIT-bankcard";
 export const bankCardRouter = Router();
 
 //banknii card uusgeh endpoint
-bankCardRouter.post("/", createBankCard);
+bankCardRouter.post("/addnew", createBankCard);
 
 //banknii cardniihaa medeelliig duudaj awah endpoint
 bankCardRouter.get("/", fetchBankCard);
