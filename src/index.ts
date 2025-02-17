@@ -1,10 +1,10 @@
 import express, { Request, Response } from "express";
 import { bankCardRouter } from "./router/bankCardRouter";
 import { configDotenv } from "dotenv";
-configDotenv()
+configDotenv();
 import { PrismaClient } from "@prisma/client";
-import {  usersRouter } from "./router/usersRouter";
-import cors from "cors";;
+import { usersRouter } from "./router/usersRouter";
+import cors from "cors";
 import { donationRouter } from "./router/donations";
 import { profileRouter } from "./router/profile";
 import session from "express-session";
@@ -13,15 +13,16 @@ import { verifyToken } from "./middleware/verifyToken";
 import cookieParser from "cookie-parser";
 import { signedUserRouter } from "./router/dashboard";
 
-
 const app = express();
 const PORT = process.env.PORT;
 app.use(express.json());
-app.use(cookieParser())
-app.use(cors({
-  origin: "http://localhost:3000", 
-  credentials: true, 
-}));
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 export const prisma = new PrismaClient();
 
@@ -39,10 +40,6 @@ app.use("/donation", donationRouter);
 
 // logged useriin dashboard handah heseg
 app.use("/dashboard", verifyToken, signedUserRouter);
-
-
-
-
 
 // app.use("/navigation")
 

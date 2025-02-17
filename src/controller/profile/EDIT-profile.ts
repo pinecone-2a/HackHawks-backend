@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 import { prisma } from "../..";
+import { CustomRequest } from "../../middleware/verifyToken";
 
-
-export const EditProfile = async (req: Request, res: Response) => {
+export const EditProfile = async (req: CustomRequest, res: Response) => {
   const body = req.body;
-  const userId = req.params.userId || req.body.userId;
+  const userId = req.user?.id;
+  console.log("from cover", userId);
   try {
     if (body.id !== userId) {
       res.json({ success: false, message: "ID didnt match!" });
@@ -23,9 +24,9 @@ export const EditProfile = async (req: Request, res: Response) => {
   }
 };
 
-export const updateCover = async (req: Request, res: Response) => {
+export const updateCover = async (req: CustomRequest, res: Response) => {
   const { image } = req.body;
-  const { userId } = req.params;
+  const userId = req.user?.id;
   try {
     const user = await prisma.profile.findUnique({
       where: {
@@ -42,7 +43,6 @@ export const updateCover = async (req: Request, res: Response) => {
         },
       });
       res.json({ message: "success" });
-     
     }
   } catch (e) {
     console.error(e, "aldaa");
