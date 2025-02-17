@@ -11,18 +11,16 @@ export const signInController = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   try {
-
-    
     const existingUser = await prisma.user.findFirst({ where: { email } });
     if (!existingUser) {
-      res.status(400).json({ message: "NOT_REGISTERED", success: false })
+      res.status(400).json({ message: "NOT_REGISTERED", success: false });
       return;
     }
 
     const isPasswordValid = await bcrypt.compare(password, existingUser.password);
     if (!isPasswordValid) {
-       res.status(400).json({ message: "WRONG_PASSWORD", success: false });
-       return;
+      res.status(400).json({ message: "WRONG_PASSWORD", success: false });
+      return;
     }
 
     const existingProfile = await prisma.profile.findFirst({
@@ -34,29 +32,28 @@ export const signInController = async (req: Request, res: Response) => {
 
     res.cookie("Authorization", accessToken, {
       httpOnly: true,
-      maxAge: 30 * 60 * 1000, 
-      sameSite: "strict",
+      maxAge: 30 * 60 * 1000,
+      sameSite: "none",
       secure: true,
     });
 
     res.cookie("RefreshToken", refreshToken, {
       httpOnly: true,
-      maxAge: 2 * 60 * 60 * 1000,   
-      sameSite: "strict",
+      maxAge: 2 * 60 * 60 * 1000,
+      sameSite: "none",
       secure: true,
     });
 
-     res.json({
+    res.json({
       message: "Welcome back",
       success: true,
       profileSetup: !!existingProfile,
       data: { id: existingUser.id },
-      
     });
-    return
+    return;
   } catch (error) {
     console.error("Error signing in:", error);
     res.status(500).json({ message: "INTERNAL_SERVER_ERROR", success: false });
-    return 
+    return;
   }
 };
