@@ -34,14 +34,14 @@ export const signInController = async (req: Request, res: Response) => {
       httpOnly: true,
       maxAge: 30 * 60 * 1000,
       sameSite: "none",
-      secure: false,
+      secure: true,
     });
 
     res.cookie("RefreshToken", refreshToken, {
       httpOnly: true,
       maxAge: 2 * 60 * 60 * 1000,
       sameSite: "none",
-      secure: false,
+      secure: true,
     });
 
     res.json({
