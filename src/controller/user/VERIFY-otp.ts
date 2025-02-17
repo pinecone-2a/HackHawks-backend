@@ -13,7 +13,7 @@ export const verifyOTP = async (req: Request, res: Response) => {
         message: "OTP string эсвэл буруу format-тай байна",
         success: false,
         code: "INVALID_OTP_FORMAT",
-      })
+      });
       return;
     }
 
@@ -23,11 +23,11 @@ export const verifyOTP = async (req: Request, res: Response) => {
     });
 
     if (!otpRecord) {
-       res.status(400).json({
+      res.status(400).json({
         message: "OTP хугацаа дууссан эсвэл буруу OTP",
         success: false,
         code: "INVALID_OTP",
-      })
+      });
       return;
     }
 
@@ -41,12 +41,11 @@ export const verifyOTP = async (req: Request, res: Response) => {
     // hereglej duussan otpnuudaa delete hiih
     await prisma.otp.deleteMany({ where: { email } });
 
-   
-     res.status(200).json({
+    res.status(200).json({
       message: "Нууц үг амжилттай солигдлоо",
       success: true,
       code: "PASS_CHANGED_SUCCESSFULLY",
-    })
+    });
     return;
   } catch (error) {
     console.error("OTP шалгалт алдаа:", error);
@@ -54,7 +53,7 @@ export const verifyOTP = async (req: Request, res: Response) => {
       message: "Сервер талын алдаа",
       success: false,
       code: "SERVER_ERROR",
-    })
-    return ;
+    });
+    return;
   }
 };
