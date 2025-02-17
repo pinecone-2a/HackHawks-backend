@@ -57,6 +57,6 @@ model bankCard {
 
 model otp {
   id    String @id @default(nanoid())
-  opt   Int
+  otp   Int
   email String
 }

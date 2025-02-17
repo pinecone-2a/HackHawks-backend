@@ -1,38 +1,27 @@
 import express, { Request, Response } from "express";
 import { prisma } from "../..";
-import { CustomRequest } from "../../router/usersRouter";
+import { profile } from "console";
 
-export const receivedDonation = async (req: CustomRequest, res: Response) => {
-  const { userId } = req.params;
-  const amount = req.query.amount;
-  const days = req.query.days ? req.query.days : 7;
-  const lte = new Date();
-  const gte = new Date(lte);
 
-  const todayDay = lte.getMonth();
-  gte.setDate(todayDay - Number(days));
+export const fetchDonation = async (req: Request, res: Response) => {
+  const {id} = req.params; 
+  console.log(id)
 
+  
   try {
     const donation = await prisma.donation.findMany({
       where: {
-        AND: [{ recipentId: userId }, amount ? { amount: Number(amount) } : {}],
-        createdAt: { gte, lte },
-      },
+            recipentId:id
+      },include:{
+        donor:{
+            select:{
+                profile:true
+            }
+        }
+      }
+
     });
-    // aggregate ashiglah
-    const totalEarnings = await prisma.donation.aggregate({
-      where: {
-        AND: [
-          { recipentId: userId },
-          { createdAt: { gte, lte } },
-          amount ? { amount: Number(amount) } : {},
-        ],
-      },
-      _sum: {
-        amount: true,
-      },
-    });
-    res.json({ donation, totalEarnings });
+    res.json(donation)
   } catch (e) {
     console.error(e, "received donation error");
   }

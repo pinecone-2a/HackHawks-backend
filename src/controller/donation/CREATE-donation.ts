@@ -1,27 +1,38 @@
-import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import { prisma } from "../..";
+import express, { Request, Response } from "express";
+import { CustomRequest } from "../../middleware/verifyToken";
 
-interface AuthRequest extends Request {
-  userId?: string; // userId-г нэмэх
-}
-
-export const verifyToken = (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  const token = req.header("Authorization")?.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({ message: "Access Denied" });
+export const createDonation = async (req: CustomRequest, res: Response) => {
+  const { specialMessage,socialURL,donationAmout,id } = req.body; // Destructure the necessary fields from the request body
+  const userId = req.user?.id;
+  console.log("user id from donation",userId)
+  console.log("donation", donationAmout)
+  console.log("donation", specialMessage)
+  console.log("donation", socialURL)
+  console.log("donation recipendID", id)
+  if (!userId) {
+    res.status(400).json({ success: false, message: "User ID missing" });
+    return;
   }
+  if (!donationAmout) {
+     res.status(400).json({ success: false, message: " amount are required." })
+     return;}
 
   try {
-    const secretKey = process.env.JWT_SECRET || "your_secret_key";
-    const verified = jwt.verify(token, secretKey) as { id: string };
-    req.userId = verified.id;
-    next();
-  } catch (error) {
-    res.status(400).json({ message: "Invalid Token" });
+    const newDonation = await prisma.donation.create({
+      data: {
+        amount: Number(donationAmout),
+        specialMessage:specialMessage,
+        socialURLOrBuyMeACoffee:socialURL,
+        recipentId: id,
+        donorId: userId
+        
+
+      },
+    });
+    res.json({ success: true, data: newDonation });
+  } catch (e) {
+    console.error(e, "Error creating donation");
+    res.status(500).json({ success: false, message: "Internal server error." });
   }
 };
