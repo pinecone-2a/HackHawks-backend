@@ -1,21 +1,23 @@
 import express, { Request, Response } from "express";
 import { bankCardRouter } from "./router/bankCardRouter";
 import { configDotenv } from "dotenv";
+configDotenv()
 import { PrismaClient } from "@prisma/client";
-import { CustomRequest, usersRouter } from "./router/usersRouter";
-import cors from "cors";
-require("dotenv").config();
+import {  usersRouter } from "./router/usersRouter";
+import cors from "cors";;
 import { donationRouter } from "./router/donations";
 import { profileRouter } from "./router/profile";
-import cookieParser from "cookie-parser";
-import { LoggedUserRouter } from "./router/testing";
 import session from "express-session";
 import jwt from "jsonwebtoken";
-import { getUsers } from "./controller/authentication/GetUser";
-const app = express();
+import { verifyToken } from "./middleware/verifyToken";
+import cookieParser from "cookie-parser";
+import { signedUserRouter } from "./router/dashboard";
 
+
+const app = express();
 const PORT = process.env.PORT;
 app.use(express.json());
+app.use(cookieParser())
 app.use(cors({
   origin: "http://localhost:3000", 
   credentials: true, 
@@ -24,7 +26,7 @@ app.use(cors({
 export const prisma = new PrismaClient();
 
 // bank card backend endpoint ///
-app.use("/bank-card", bankCardRouter);
+app.use("/bank-card", verifyToken, bankCardRouter);
 
 // profiel backend endpoint //
 app.use("/profile", profileRouter);
@@ -35,10 +37,14 @@ app.use("/auth", usersRouter);
 // donation backend endpoint //
 app.use("/donation", donationRouter);
 
-// Logged user info - do not touch
-app.use("/dashbordInfo", LoggedUserRouter);
+// logged useriin dashboard handah heseg
+app.use("/dashboard", verifyToken, signedUserRouter);
 
 
+
+
+
+// app.use("/navigation")
 
 // refresh token - testing
 // app.get("/", async (req: CustomRequest, res: Response) => {

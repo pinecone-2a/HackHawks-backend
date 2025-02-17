@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { prisma } from "../..";
-import { CustomRequest } from "../../router/usersRouter";
 import bcrypt from "bcrypt"
 
 export const signUpController = async (req: Request, res: Response) => {

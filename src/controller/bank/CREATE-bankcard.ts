@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
 import { prisma } from "../..";
-import { CustomRequest } from "../../router/usersRouter";
+
 
 export const createBankCard = async (req: Request, res: Response) => {
   const body = req.body;
-  console.log("Received body:", body);
 
   if (!body.userId) {
      res.status(400).json({ error: "Missing userId in request body" });
