@@ -4,9 +4,8 @@ import { CustomRequest } from "../../middleware/verifyToken";
 import bcrypt from "bcrypt";
 
 export const updatePassword = async(req:CustomRequest, res:Response) =>{
- 
     const userId = req.user?.id
-    const {newPassword } = req.body;
+    const newPassword = req.body.newPassword
     console.log(userId)
     try {
         if(!newPassword){

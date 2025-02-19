@@ -18,7 +18,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const updatePassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
-    const { newPassword } = req.body;
+    const newPassword = req.body.newPassword;
     console.log(userId);
     try {
         if (!newPassword) {
