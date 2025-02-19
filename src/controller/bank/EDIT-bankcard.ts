@@ -1,16 +1,17 @@
 import { Request, Response } from "express";
 import { prisma } from "../..";
-export const editBankCard = async (req: Request, res: Response) => {
-  const { userId } = req.params;
-  const { country, firstName, lastName, cardNumber, expiryDate } = req.body;
-
+import { CustomRequest } from "../../middleware/verifyToken";
+export const editBankCard = async (req: CustomRequest, res: Response) => {
+  const userId = req.user?.id
+  const { selectedCountry, firstName, lastName, cardNumber, expiryDate } = req.body;
+  console.log("helloo from edit card", selectedCountry, firstName, lastName, cardNumber, expiryDate)
   try {
     const updatedBankCard = await prisma.bankCard.update({
       where: {
-        userId: userId,
+        userId
       },
       data: {
-        country,
+        country:selectedCountry,
         firstName,
         lastName,
         cardNumber,
@@ -20,8 +21,7 @@ export const editBankCard = async (req: Request, res: Response) => {
     res.json({
       status: 200,
       code: "UPDATE_CARD_SUCCESSFULL",
-
-      message: "card informations updated succefully",
+      message: " Амжилттай шинэчлэгдлээ",
       success: true,
       data: updatedBankCard,
     });

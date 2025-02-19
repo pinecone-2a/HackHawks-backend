@@ -14,5 +14,5 @@ bankCardRouter.post("/addnew", createBankCard);
 bankCardRouter.get("/", fetchBankCard);
 
 // banknii cardniihaa medeelliig oorchloh endpoint
-bankCardRouter.put("/:userId", editBankCard)
+bankCardRouter.put("/update", editBankCard)
 

@@ -13,7 +13,7 @@ profileRouter.get("/dashboard", verifyToken, getProfile);
 
 profileRouter.get("");
 
-profileRouter.post("/", createProfile);
+profileRouter.post("/create", verifyToken, createProfile);
 
 profileRouter.get("/explore", searchProfileExplore);
 
@@ -21,4 +21,4 @@ profileRouter.get("/explore/:id", profileUserid);
 
 profileRouter.put("/updateCover", verifyToken, updateCover);
 
-profileRouter.put(`/update`, EditProfile);
+profileRouter.put(`/update`, verifyToken, EditProfile);

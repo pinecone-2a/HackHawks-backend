@@ -1,176 +1,55 @@
 "use strict";
-// import {  Response } from "express";
-// import { prisma } from "../..";
-// import bcrypt from "bcrypt";
-// import { Request } from "express";
-// interface CustomRequest extends Request {
-//   userId?: string;
-//   email?: string;
-// }
-// import nodemailer from "nodemailer";
-// const transporter = nodemailer.createTransport({
-//     service: 'gmail',
-//     auth: {
-//         user: process.env.SMTP_USER,
-//         pass: process.env.SMTP_PASS,
-//     }
-// });
-// // forgot password method - OTP
-// export const SendMail1 = async (req: CustomRequest, res: Response) => {
-//   const { email } = req.body;
-//   try {
-//     const user = await prisma.user.findUnique({
-//       where: {
-//         email,
-//       },
-//     });
-//     if (user) {
-//       const otp = Math.floor(Math.random() * 899999999 + 100000000);
-//       await transporter.sendMail({
-//         from: "Team HackHawks", // sender address
-//         to: email, // list of receivers
-//         subject: "OTP code for reset password", // Subject line
-//         text: "Buy me a coffee / Team HackHawks", // plain text body
-//         html: `<b>Hello! ${user.username}.</b><p> Here is the OneTimePassword: ${otp}</p>`, // html body
-//       });
-//       const newOtp = await prisma.otp.create({
-//         data: {
-//           email,
-//           otp: otp,
-//         },
-//       });
-//       res.json({ success: true, id: newOtp.id });
-//       return;
-//     }
-//     res.json({ success: false });
-//     return;
-//   } catch (e) {
-//     console.error(e, "aldaa");
-//   }
-// };
-// export const OTPcheck1 = async (req: CustomRequest, res: Response) => {
-//   const { otp, email, id, password } = req.body;
-//   // res.json({ email });
-//   try {
-//     const user = await prisma.otp.findUnique({
-//       where: {
-//         id,
-//       },
-//     });
-//     if (user) {
-//       if (user.otp === Number(otp) && user.email === email) {
-//         const hashedPass = await bcrypt.hash(
-//           password,
-//           Number(process.env.SALT)
-//         );
-//         await prisma.user.update({
-//           where: {
-//             email,
-//           },
-//           data: {
-//             password: hashedPass,
-//           },
-//         });
-//         res.json({
-//           message: "OTP_MATCHED",
-//           success: true,
-//           code: "PASS_CHANGED_SUCCESSFULLY",
-//         });
-//         await prisma.otp.delete({
-//           where: {
-//             id,
-//           },
-//         });
-//         return;
-//       }
-//       res.json({ success: false, message: "OTP_NOT_MATCHED" });
-//       return;
-//     }
-//     res.json({ success: false, message: "USER_NOT_FOUND" });
-//     return;
-//   } catch (e) {
-//     console.error(e, "aldaa");
-//   }
-// };
-// // used jwt to update password
-// export const updatepassword = async (req: CustomRequest, res: Response) => {
-//   const { otp, id, password } = req.body;
-//   console.log(req.body);
-//   const userid = req.userId;
-//   const email = req.email;
-//   try {
-//     const user = await prisma.otp.findUnique({
-//       where: {
-//         id,
-//       },
-//     });
-//     console.log(user);
-//     if (user) {
-//       if (user.otp === Number(otp) && user.email === email) {
-//         const hashedPass = await bcrypt.hash(
-//           password,
-//           Number(process.env.SALT)
-//         );
-//         await prisma.user.update({
-//           where: {
-//             id: userid,
-//           },
-//           data: {
-//             password: hashedPass,
-//           },
-//         });
-//         res.json({
-//           message: "OTP MATCHED",
-//           success: true,
-//           code: "PASS_CHANGED_SUCCESSFULLY",
-//         });
-//         await prisma.otp.delete({
-//           where: {
-//             id,
-//           },
-//         });
-//         return;
-//       }
-//       res.json({ success: false, message: "OTP didn't match" });
-//       return;
-//     }
-//     res.json({ success: false, message: "OTP expired" });
-//     return;
-//   } catch (e) {
-//     console.error(e, "aldaa");
-//   }
-// };
-// export const SendMail2 = async (req: CustomRequest, res: Response) => {
-//   // const { email } = req.body;
-//   // res.json({ email });
-//   const id = req.userId;
-//   try {
-//     const user = await prisma.user.findUnique({
-//       where: {
-//         id,
-//       },
-//     });
-//     if (user) {
-//       const otp = Math.floor(Math.random() * 899999999 + 100000000);
-//       await transporter.sendMail({
-//         from: "Team HackHawks", // sender address
-//         to: user.email, // list of receivers
-//         subject: "OTP code for reset password", // Subject line
-//         text: "Buy me a coffee / Team HackHawks", // plain text body
-//         html: `<b>Hello! ${user.username}.</b><p> Here is the OneTimePassword: ${otp}</p>`, // html body
-//       });
-//       const newOtp = await prisma.otp.create({
-//         data: {
-//           email: user.email,
-//           otp: otp,
-//         },
-//       });
-//       res.json({ success: true, id: newOtp.id });
-//       return;
-//     }
-//     res.json({ success: false });
-//     return;
-//   } catch (e) {
-//     console.error(e, "aldaa");
-//   }
-// };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.updatePassword = void 0;
+const __1 = require("../..");
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const updatePassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+    const { newPassword } = req.body;
+    console.log(userId);
+    try {
+        if (!newPassword) {
+            res.json({
+                status: 400,
+                code: "PASSWORD failed",
+                success: true,
+                message: "Password update failed",
+                data: null
+            });
+        }
+        const salt = bcrypt_1.default.genSaltSync(8);
+        const hashedPass = bcrypt_1.default.hashSync(newPassword, salt);
+        const updatedPass = yield __1.prisma.user.update({
+            where: {
+                id: userId
+            },
+            data: {
+                password: hashedPass
+            }
+        });
+        res.json({
+            status: 200,
+            code: "PASSWORD_UPDATED",
+            success: true,
+            message: "Password successfully updated",
+            data: updatedPass
+        });
+    }
+    catch (e) {
+        console.log(e, "error while updating password");
+    }
+});
+exports.updatePassword = updatePassword;

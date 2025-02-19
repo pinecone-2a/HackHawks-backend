@@ -12,15 +12,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.editBankCard = void 0;
 const __1 = require("../..");
 const editBankCard = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { userId } = req.params;
-    const { country, firstName, lastName, cardNumber, expiryDate } = req.body;
+    var _a;
+    const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+    const { selectedCountry, firstName, lastName, cardNumber, expiryDate } = req.body;
+    console.log("helloo from edit card", selectedCountry, firstName, lastName, cardNumber, expiryDate);
     try {
         const updatedBankCard = yield __1.prisma.bankCard.update({
             where: {
-                userId: userId,
+                userId
             },
             data: {
-                country,
+                country: selectedCountry,
                 firstName,
                 lastName,
                 cardNumber,
@@ -30,7 +32,7 @@ const editBankCard = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.json({
             status: 200,
             code: "UPDATE_CARD_SUCCESSFULL",
-            message: "card informations updated succefully",
+            message: " Амжилттай шинэчлэгдлээ",
             success: true,
             data: updatedBankCard,
         });

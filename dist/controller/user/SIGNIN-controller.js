@@ -40,13 +40,13 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.cookie("Authorization", accessToken, {
             httpOnly: true,
             maxAge: 30 * 60 * 1000,
-            sameSite: "strict",
+            sameSite: "none",
             secure: true,
         });
         res.cookie("RefreshToken", refreshToken, {
             httpOnly: true,
             maxAge: 2 * 60 * 60 * 1000,
-            sameSite: "strict",
+            sameSite: "none",
             secure: true,
         });
         res.json({

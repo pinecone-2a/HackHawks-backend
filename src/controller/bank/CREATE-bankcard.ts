@@ -1,19 +1,21 @@
 import { Request, Response } from "express";
 import { prisma } from "../..";
+import { CustomRequest } from "../../middleware/verifyToken";
 
 
-export const createBankCard = async (req: Request, res: Response) => {
-  const body = req.body;
-
-  if (!body.userId) {
-     res.status(400).json({ error: "Missing userId in request body" });
+export const createBankCard = async (req: CustomRequest, res: Response) => {
+  const userId = req.user?.id
+  const body = req.body
+  
+  if (!userId) {
+     res.status(400).json({ error: "Missing userId" });
      return
   }
 
   try {
     // 🔍 Check if a bank card already exists for this user
     const existingCard = await prisma.bankCard.findUnique({
-      where: { userId: body.userId },
+      where: { userId},
     });
 
     if (existingCard) {
@@ -23,7 +25,10 @@ export const createBankCard = async (req: Request, res: Response) => {
 
     // ✅ Create the bank card
     const newCard = await prisma.bankCard.create({
-      data: body,
+      data: {
+        ...body,
+        userId
+      }
     });
 
     res.status(201).json({ message: "success", card: newCard });

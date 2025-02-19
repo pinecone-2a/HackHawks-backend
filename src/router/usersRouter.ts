@@ -6,6 +6,8 @@ import { forgotPassword } from "../controller/user/REQUEST-otp";
 import { verifyOTP } from "../controller/user/VERIFY-otp";
 import { verifyAuth } from "../controller/user/VERIFY-auth";
 import { logOutUser } from "../controller/user/LOGOUT-user";
+import { updatePassword } from "../controller/user/UPDATEPASS-user";
+import { verifyToken } from "../middleware/verifyToken";
 
 
 require("dotenv").config();
@@ -18,21 +20,21 @@ usersRouter.post("/sign-in", signInController);
 
 usersRouter.post("/:username", checkUsername);
 
+// Request password forgot 
 usersRouter.post("/reset/password", forgotPassword); 
 
 // otp verify bolon shine password awah endpoint
 usersRouter.post("/reset/change-password", verifyOTP);
+
+//settings dotroosoo passwordoo solih endpoint
+usersRouter.put("/update-password", verifyToken, updatePassword)
 
 // navigation logged in or not shalgah endpoint
 usersRouter.get("/verify", verifyAuth);
 
 usersRouter.post("/user/logout", logOutUser)
 
-// password update endpoint - method 2 update password in settings (hereglegch nevtereed passaa solihiig husvel)
-// usersRouter.put("/auth/reset/change-password",  updatepassword);
-// usersRouter.put("/auth/reset/password",  SendMail2);
 
-// Testing purposes
 
 
 

@@ -13,21 +13,18 @@ exports.updateCover = exports.EditProfile = void 0;
 const __1 = require("../..");
 const EditProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const body = req.body;
+    const { name, about, socialUrl, avatarImage } = req.body;
     const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
     console.log("from cover", userId);
+    console.log(req.body);
     try {
-        if (body.id !== userId) {
-            res.json({ success: false, message: "ID didnt match!" });
-            return;
-        }
-        const editProfile = yield __1.prisma.profile.update({
+        const updatedProfile = yield __1.prisma.profile.update({
             where: {
                 userId,
             },
-            data: body,
+            data: { name, about, socialMediaURL: socialUrl, avatarImage }
         });
-        res.json({ success: true, message: "success" });
+        res.json({ success: true, message: "success", data: updatedProfile });
     }
     catch (e) {
         console.error(e, "aldaa");
