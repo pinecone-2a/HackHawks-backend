@@ -6,6 +6,7 @@ export const createProfile = async (req: CustomRequest, res: Response) => {
   try {
     const { name, about, avatarImage, socialMediaURL } = req.body;
     const userId = req.user?.id; 
+    console.log(userId)
     if ( !name || !about || !avatarImage || !socialMediaURL) {
        res.status(400).json({ error: "Хоосон талбар байна" })
        return;
