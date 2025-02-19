@@ -11,4 +11,4 @@ exports.bankCardRouter.post("/addnew", CREATE_bankcard_1.createBankCard);
 //banknii cardniihaa medeelliig duudaj awah endpoint
 exports.bankCardRouter.get("/", GET_bankcard_1.fetchBankCard);
 // banknii cardniihaa medeelliig oorchloh endpoint
-exports.bankCardRouter.put("/:userId", EDIT_bankcard_1.editBankCard);
+exports.bankCardRouter.put("/update", EDIT_bankcard_1.editBankCard);

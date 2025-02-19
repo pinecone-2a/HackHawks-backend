@@ -14,7 +14,7 @@ const __1 = require("../..");
 const getProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
-    console.log("profile", userId);
+    console.log("profile edit", userId);
     try {
         const profileData = yield __1.prisma.profile.findMany({
             where: {

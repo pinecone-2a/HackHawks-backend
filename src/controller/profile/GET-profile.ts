@@ -5,7 +5,7 @@ import { CustomRequest } from "../../middleware/verifyToken";
 
 export const getProfile = async (req: CustomRequest, res: Response) => {
   const userId = req.user?.id
-  console.log("profile", userId)    
+  console.log("profile edit",userId)
 
 
   try {

@@ -16,7 +16,6 @@ const verifyToken = (req, res, next) => {
         }
         const decoded = jsonwebtoken_1.default.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
         req.user = { id: decoded.id };
-        console.log(decoded);
         next();
     }
     catch (e) {

@@ -12,15 +12,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createBankCard = void 0;
 const __1 = require("../..");
 const createBankCard = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
     const body = req.body;
-    if (!body.userId) {
-        res.status(400).json({ error: "Missing userId in request body" });
+    if (!userId) {
+        res.status(400).json({ error: "Missing userId" });
         return;
     }
     try {
         // 🔍 Check if a bank card already exists for this user
         const existingCard = yield __1.prisma.bankCard.findUnique({
-            where: { userId: body.userId },
+            where: { userId },
         });
         if (existingCard) {
             res.status(400).json({ error: "User already has a bank card." });
@@ -28,7 +30,7 @@ const createBankCard = (req, res) => __awaiter(void 0, void 0, void 0, function*
         }
         // ✅ Create the bank card
         const newCard = yield __1.prisma.bankCard.create({
-            data: body,
+            data: Object.assign(Object.assign({}, body), { userId })
         });
         res.status(201).json({ message: "success", card: newCard });
     }

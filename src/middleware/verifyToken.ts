@@ -21,7 +21,7 @@ export const verifyToken = (req: CustomRequest, res: Response, next: NextFunctio
       const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!) as {id:string};
    
       req.user = {id: decoded.id}
-     console.log(decoded)
+    
      next()
    }catch(e){
       console.error("JWT_VERIFY_ERROR", e)

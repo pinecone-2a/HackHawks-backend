@@ -12,14 +12,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createProfile = void 0;
 const __1 = require("../.."); // Adjust path as needed
 const createProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { userId, name, about, avatarImage, socialMediaURL } = req.body;
-        if (!userId || !name || !about || !avatarImage || !socialMediaURL) {
+        const { name, about, avatarImage, socialMediaURL } = req.body;
+        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+        if (!name || !about || !avatarImage || !socialMediaURL) {
             res.status(400).json({ error: "Хоосон талбар байна" });
             return;
         }
+        if (!userId) {
+            res.status(400).json({ error: "User ID is missing" });
+            return;
+        }
         const profile = yield __1.prisma.profile.create({
-            data: { userId, name, about, avatarImage, socialMediaURL },
+            data: { name, about, avatarImage, socialMediaURL, userId },
         });
         res.status(201).json({ message: "success", profile });
     }

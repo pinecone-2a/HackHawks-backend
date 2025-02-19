@@ -11,8 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.logOutUser = void 0;
 const logOutUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.clearCookie("Authorization");
-    res.clearCookie("RefreshToken");
+    res.clearCookie("Authorization", { httpOnly: true, sameSite: "none", secure: true });
+    res.clearCookie("RefreshToken", { httpOnly: true, sameSite: "none", secure: true });
     res.json({ message: "Хэрэглэгч амжилттай гарлаа", succes: true });
 });
 exports.logOutUser = logOutUser;

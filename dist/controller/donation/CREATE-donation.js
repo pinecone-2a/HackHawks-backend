@@ -13,7 +13,7 @@ exports.createDonation = void 0;
 const __1 = require("../..");
 const createDonation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { specialMessage, socialURL, donationAmout, id } = req.body; // Destructure the necessary fields from the request body
+    const { specialMessage, socialURL, donationAmout, id } = req.body;
     const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
     console.log("user id from donation", userId);
     console.log("donation", donationAmout);

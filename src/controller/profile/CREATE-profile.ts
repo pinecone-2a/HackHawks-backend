@@ -1,18 +1,23 @@
 import { Request, Response } from "express";
 import { prisma } from "../.."; // Adjust path as needed
+import { CustomRequest } from "../../middleware/verifyToken";
 
-export const createProfile = async (req: Request, res: Response) => {
+export const createProfile = async (req: CustomRequest, res: Response) => {
   try {
-    const { userId, name, about, avatarImage, socialMediaURL } = req.body;
+    const { name, about, avatarImage, socialMediaURL } = req.body;
+    const userId = req.user?.id; 
+    if ( !name || !about || !avatarImage || !socialMediaURL) {
+       res.status(400).json({ error: "Хоосон талбар байна" })
+       return;
+    }
 
-
-    if (!userId || !name || !about || !avatarImage || !socialMediaURL) {
-     res.status(400).json({ error: "Хоосон талбар байна" });
-     return
+    if (!userId) {
+      res.status(400).json({ error: "User ID is missing" });
+      return;
     }
 
     const profile = await prisma.profile.create({
-      data: { userId, name, about, avatarImage, socialMediaURL },
+      data: {  name, about, avatarImage, socialMediaURL, userId }, 
     });
 
     res.status(201).json({ message: "success", profile });

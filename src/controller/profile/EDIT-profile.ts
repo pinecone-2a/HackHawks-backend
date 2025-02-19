@@ -3,21 +3,19 @@ import { prisma } from "../..";
 import { CustomRequest } from "../../middleware/verifyToken";
 
 export const EditProfile = async (req: CustomRequest, res: Response) => {
-  const body = req.body;
+  const { name, about, socialUrl, avatarImage } = req.body
   const userId = req.user?.id;
   console.log("from cover", userId);
+  console.log(req.body)
   try {
-    if (body.id !== userId) {
-      res.json({ success: false, message: "ID didnt match!" });
-      return;
-    }
-    const editProfile = await prisma.profile.update({
+    
+    const updatedProfile = await prisma.profile.update({
       where: {
         userId,
       },
-      data: body,
+      data: { name, about, socialMediaURL:socialUrl, avatarImage }
     });
-    res.json({ success: true, message: "success" });
+    res.json({ success: true, message: "success", data:updatedProfile });
   } catch (e) {
     console.error(e, "aldaa");
     res.json({ success: false });

@@ -3,7 +3,7 @@ import express, { Request, Response } from "express";
 import { CustomRequest } from "../../middleware/verifyToken";
 
 export const createDonation = async (req: CustomRequest, res: Response) => {
-  const { specialMessage,socialURL,donationAmout,id } = req.body; // Destructure the necessary fields from the request body
+  const { specialMessage,socialURL,donationAmout,id } = req.body; 
   const userId = req.user?.id;
   console.log("user id from donation",userId)
   console.log("donation", donationAmout)
