@@ -23,11 +23,12 @@ model donation {
   amount                  Int
   specialMessage          String   @default("Thank you, good sir")
   socialURLOrBuyMeACoffee String   @default("https://buymeacoffee.com/glpzghoo")
-  donorId                 String
+  donorId                 String?
+  donorName               String    @default("Guest")
   recipentId              String
   createdAt               DateTime @default(now())
   updatedAt               DateTime @default(now())
-  donor                   user     @relation("donor", fields: [donorId], references: [id])
+  donor                   user?     @relation("donor", fields: [donorId], references: [id])
   recipent                user     @relation("recipent", fields: [recipentId], references: [id])
 }
 

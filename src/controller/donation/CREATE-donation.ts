@@ -1,38 +1,36 @@
 import { prisma } from "../..";
-import express, { Request, Response } from "express";
-import { CustomRequest } from "../../middleware/verifyToken";
+import { Response } from "express";
+import { CustomRequest } from "../../middleware/verifyId";
 
 export const createDonation = async (req: CustomRequest, res: Response) => {
-  const { specialMessage,socialURL,donationAmout,id } = req.body; 
-  const userId = req.user?.id;
-  console.log("user id from donation",userId)
-  console.log("donation", donationAmout)
-  console.log("donation", specialMessage)
-  console.log("donation", socialURL)
-  console.log("donation recipendID", id)
-  if (!userId) {
-    res.status(400).json({ success: false, message: "User ID missing" });
-    return;
-  }
-  if (!donationAmout) {
-     res.status(400).json({ success: false, message: " amount are required." })
-     return;}
-
   try {
+    const { specialMessage, socialURL, donationAmout, id } = req.body;
+    const userId = req.user?.id;
+
+    if (!donationAmout) {
+      res.status(400).json({ success: false, message: "Amount is required." })
+      return;
+    }
+
     const newDonation = await prisma.donation.create({
       data: {
         amount: Number(donationAmout),
-        specialMessage:specialMessage,
-        socialURLOrBuyMeACoffee:socialURL,
+        specialMessage: specialMessage || "",
+        socialURLOrBuyMeACoffee: socialURL || "",
         recipentId: id,
-        donorId: userId
-        
-
+        donorId: userId || null,
+        donorName: userId ? req.user?.name : "Guest",
       },
     });
-    res.json({ success: true, data: newDonation });
+
+     res.json({ success: true, data: newDonation })
+     return;
   } catch (e) {
-    console.error(e, "Error creating donation");
-    res.status(500).json({ success: false, message: "Internal server error." });
+    console.error("Error creating donation:", e);
+
+    if (!res.headersSent) {
+     res.status(500).json({ success: false, message: "Internal server error." })
+     return ;
+    }
   }
 };

@@ -13,9 +13,13 @@ ALTER TABLE "bankCard" ADD COLUMN     "CVC" TEXT NOT NULL;
 ALTER TABLE "donation" ALTER COLUMN "specialMessage" SET DEFAULT 'Thank you, good sir',
 ALTER COLUMN "socialURLOrBuyMeACoffee" SET DEFAULT 'https://buymeacoffee.com/glpzghoo';
 
+ALTER TABLE "donation" ADD COLUMN "donorName" VARCHAR NOT NULL DEFAULT 'Guest';
+
+
 -- AlterTable
 ALTER TABLE "profile" ALTER COLUMN "backgroundImage" DROP NOT NULL,
 ALTER COLUMN "successMessage" SET DEFAULT 'Thank you good sir';
+
 
 -- CreateTable
 CREATE TABLE "otp" (

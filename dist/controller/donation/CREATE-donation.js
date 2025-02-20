@@ -12,37 +12,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createDonation = void 0;
 const __1 = require("../..");
 const createDonation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const { specialMessage, socialURL, donationAmout, id } = req.body;
-    const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
-    console.log("user id from donation", userId);
-    console.log("donation", donationAmout);
-    console.log("donation", specialMessage);
-    console.log("donation", socialURL);
-    console.log("donation recipendID", id);
-    if (!userId) {
-        res.status(400).json({ success: false, message: "User ID missing" });
-        return;
-    }
-    if (!donationAmout) {
-        res.status(400).json({ success: false, message: " amount are required." });
-        return;
-    }
+    var _a, _b;
     try {
+        const { specialMessage, socialURL, donationAmout, id } = req.body;
+        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+        if (!donationAmout) {
+            res.status(400).json({ success: false, message: "Amount is required." });
+            return;
+        }
         const newDonation = yield __1.prisma.donation.create({
             data: {
                 amount: Number(donationAmout),
-                specialMessage: specialMessage,
-                socialURLOrBuyMeACoffee: socialURL,
+                specialMessage: specialMessage || "",
+                socialURLOrBuyMeACoffee: socialURL || "",
                 recipentId: id,
-                donorId: userId
+                donorId: userId || null,
+                donorName: userId ? (_b = req.user) === null || _b === void 0 ? void 0 : _b.name : "Guest",
             },
         });
         res.json({ success: true, data: newDonation });
+        return;
     }
     catch (e) {
-        console.error(e, "Error creating donation");
-        res.status(500).json({ success: false, message: "Internal server error." });
+        console.error("Error creating donation:", e);
+        if (!res.headersSent) {
+            res.status(500).json({ success: false, message: "Internal server error." });
+            return;
+        }
     }
 });
 exports.createDonation = createDonation;
