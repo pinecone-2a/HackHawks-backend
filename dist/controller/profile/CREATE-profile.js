@@ -16,6 +16,7 @@ const createProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     try {
         const { name, about, avatarImage, socialMediaURL } = req.body;
         const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+        console.log(userId);
         if (!name || !about || !avatarImage || !socialMediaURL) {
             res.status(400).json({ error: "Хоосон талбар байна" });
             return;
