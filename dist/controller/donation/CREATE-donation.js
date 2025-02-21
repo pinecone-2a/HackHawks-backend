@@ -12,27 +12,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createDonation = void 0;
 const __1 = require("../..");
 const createDonation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b;
     try {
         const { specialMessage, socialURL, donationAmout, id } = req.body;
-        // Validate required fields
+        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
         if (!donationAmout) {
             res.status(400).json({ success: false, message: "Amount is required." });
             return;
         }
-        if (!id) {
-            res.status(400).json({ success: false, message: "Recipient ID is required." });
-            return;
-        }
-        // Get userId and ensure it's either a string or undefined
-        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id; // This will be string or undefined
         const newDonation = yield __1.prisma.donation.create({
             data: {
                 amount: Number(donationAmout),
                 specialMessage: specialMessage || "",
                 socialURLOrBuyMeACoffee: socialURL || "",
                 recipentId: id,
-                donorId: userId || undefined, // Explicitly set to undefined if userId is not available
+                donorId: userId || null,
+                donorName: userId ? (_b = req.user) === null || _b === void 0 ? void 0 : _b.name : "Guest",
             },
         });
         res.json({ success: true, data: newDonation });
