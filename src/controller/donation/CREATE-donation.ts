@@ -5,7 +5,7 @@ import { CustomRequest } from "../../middleware/verifyId";
 export const createDonation = async (req: CustomRequest, res: Response) => {
   try {
     const { specialMessage, socialURL, donationAmout, id } = req.body;
-    const userId = req.user?.id;
+    const userId = req.user?.id || undefined;
 
     if (!donationAmout) {
       res.status(400).json({ success: false, message: "Amount is required." })
@@ -18,7 +18,7 @@ export const createDonation = async (req: CustomRequest, res: Response) => {
         specialMessage: specialMessage || "",
         socialURLOrBuyMeACoffee: socialURL || "",
         recipentId: id,
-        donorId: userId || null,
+        donorId: userId,
         donorName: userId ? req.user?.name : "Guest",
       },
     });
