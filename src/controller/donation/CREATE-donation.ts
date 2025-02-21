@@ -2,6 +2,15 @@ import { prisma } from "../..";
 import { Response } from "express";
 import { CustomRequest } from "../../middleware/verifyId";
 
+interface DonationInput {
+  amount: number;
+  donorName?: string;
+  specialMessage?: string;
+  socialURLOrBuyMeACoffee?: string;
+  recipentId: string;
+  donorId?: string;
+}
+
 export const createDonation = async (req: CustomRequest, res: Response) => {
   try {
     const { specialMessage, socialURL, donationAmout, id } = req.body;
@@ -12,15 +21,17 @@ export const createDonation = async (req: CustomRequest, res: Response) => {
       return;
     }
 
+    const newDonationData: DonationInput = {
+      amount: Number(donationAmout),
+      specialMessage: specialMessage || "",
+      socialURLOrBuyMeACoffee: socialURL || "",
+      recipentId: id,
+      donorId: userId || undefined,
+      donorName: userId ? req.user?.name : "Guest",
+    };
+
     const newDonation = await prisma.donation.create({
-      data: {
-        amount: Number(donationAmout),
-        specialMessage: specialMessage || "",
-        socialURLOrBuyMeACoffee: socialURL || "",
-        recipentId: id,
-        donorId: userId || undefined,
-        donorName: userId ? req.user?.name : "Guest",
-      },
+      data: newDonationData
     });
 
      res.json({ success: true, data: newDonation })

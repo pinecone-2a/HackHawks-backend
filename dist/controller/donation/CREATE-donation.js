@@ -20,15 +20,16 @@ const createDonation = (req, res) => __awaiter(void 0, void 0, void 0, function*
             res.status(400).json({ success: false, message: "Amount is required." });
             return;
         }
+        const newDonationData = {
+            amount: Number(donationAmout),
+            specialMessage: specialMessage || "",
+            socialURLOrBuyMeACoffee: socialURL || "",
+            recipentId: id,
+            donorId: userId || undefined,
+            donorName: userId ? (_b = req.user) === null || _b === void 0 ? void 0 : _b.name : "Guest",
+        };
         const newDonation = yield __1.prisma.donation.create({
-            data: {
-                amount: Number(donationAmout),
-                specialMessage: specialMessage || "",
-                socialURLOrBuyMeACoffee: socialURL || "",
-                recipentId: id,
-                donorId: userId || undefined,
-                donorName: userId ? (_b = req.user) === null || _b === void 0 ? void 0 : _b.name : "Guest",
-            },
+            data: newDonationData
         });
         res.json({ success: true, data: newDonation });
         return;
