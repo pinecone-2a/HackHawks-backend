@@ -31,7 +31,14 @@ export const createDonation = async (req: CustomRequest, res: Response) => {
     };
 
     const newDonation = await prisma.donation.create({
-      data: newDonationData
+      data: {
+        amount: newDonationData.amount,
+        specialMessage: newDonationData.specialMessage,
+        socialURLOrBuyMeACoffee: newDonationData.socialURLOrBuyMeACoffee,
+        recipentId: newDonationData.recipentId,
+        donorName: newDonationData.donorName,
+        ...(newDonationData.donorId ? { donorId: newDonationData.donorId } : {}), // Only include if donorId is defined
+      },
     });
 
      res.json({ success: true, data: newDonation })

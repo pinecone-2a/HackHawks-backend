@@ -29,7 +29,7 @@ const createDonation = (req, res) => __awaiter(void 0, void 0, void 0, function*
             donorName: userId ? (_b = req.user) === null || _b === void 0 ? void 0 : _b.name : "Guest",
         };
         const newDonation = yield __1.prisma.donation.create({
-            data: newDonationData
+            data: Object.assign({ amount: newDonationData.amount, specialMessage: newDonationData.specialMessage, socialURLOrBuyMeACoffee: newDonationData.socialURLOrBuyMeACoffee, recipentId: newDonationData.recipentId, donorName: newDonationData.donorName }, (newDonationData.donorId ? { donorId: newDonationData.donorId } : {})),
         });
         res.json({ success: true, data: newDonation });
         return;
