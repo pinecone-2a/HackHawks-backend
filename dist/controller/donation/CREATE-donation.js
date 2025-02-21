@@ -15,6 +15,7 @@ const createDonation = (req, res) => __awaiter(void 0, void 0, void 0, function*
     var _a;
     try {
         const { specialMessage, socialURL, donationAmout, id } = req.body;
+        // Validate required fields
         if (!donationAmout) {
             res.status(400).json({ success: false, message: "Amount is required." });
             return;
@@ -23,15 +24,15 @@ const createDonation = (req, res) => __awaiter(void 0, void 0, void 0, function*
             res.status(400).json({ success: false, message: "Recipient ID is required." });
             return;
         }
-        // Get userId and ensure it's either a string or null
-        const userId = ((_a = req.user) === null || _a === void 0 ? void 0 : _a.id) || null;
+        // Get userId and ensure it's either a string or undefined
+        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id; // This will be string or undefined
         const newDonation = yield __1.prisma.donation.create({
             data: {
                 amount: Number(donationAmout),
                 specialMessage: specialMessage || "",
                 socialURLOrBuyMeACoffee: socialURL || "",
                 recipentId: id,
-                donorId: userId,
+                donorId: userId || undefined, // Explicitly set to undefined if userId is not available
             },
         });
         res.json({ success: true, data: newDonation });
