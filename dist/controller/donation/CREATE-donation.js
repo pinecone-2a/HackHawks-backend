@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createDonation = void 0;
 const __1 = require("../..");
 const createDonation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+    var _a;
     try {
         const { specialMessage, socialURL, donationAmout, id } = req.body;
         const userId = ((_a = req.user) === null || _a === void 0 ? void 0 : _a.id) || undefined;
@@ -27,7 +27,6 @@ const createDonation = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 socialURLOrBuyMeACoffee: socialURL || "",
                 recipentId: id,
                 donorId: userId,
-                donorName: userId ? (_b = req.user) === null || _b === void 0 ? void 0 : _b.name : "Guest",
             },
         });
         res.json({ success: true, data: newDonation });

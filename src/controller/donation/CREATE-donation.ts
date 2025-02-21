@@ -19,7 +19,7 @@ export const createDonation = async (req: CustomRequest, res: Response) => {
         socialURLOrBuyMeACoffee: socialURL || "",
         recipentId: id,
         donorId: userId,
-        donorName: userId ? req.user?.name : "Guest",
+        
       },
     });
 
