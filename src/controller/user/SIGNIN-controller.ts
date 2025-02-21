@@ -30,25 +30,15 @@ export const signInController = async (req: Request, res: Response) => {
     const accessToken = generateToken(existingUser, process.env.ACCESS_TOKEN_SECRET!, "30m");
     const refreshToken = generateToken(existingUser, process.env.REFRESH_TOKEN_SECRET!, "2h");
 
-    res.cookie("Authorization", accessToken, {
-      httpOnly: true,
-      maxAge: 30 * 60 * 1000,
-      sameSite: "none",
-      secure: true,
-    });
-
-    res.cookie("RefreshToken", refreshToken, {
-      httpOnly: true,
-      maxAge: 2 * 60 * 60 * 1000,
-      sameSite: "none",
-      secure: true,
-    });
-
     res.json({
       message: "Welcome back",
       success: true,
       profileSetup: !!existingProfile,
       data: { id: existingUser.id },
+      result: {
+        accessToken,
+        refreshToken,
+      },
     });
     return;
   } catch (error) {
