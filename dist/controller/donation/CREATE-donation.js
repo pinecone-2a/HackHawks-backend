@@ -19,7 +19,7 @@ const createDonation = (req, res) => __awaiter(void 0, void 0, void 0, function*
             res.status(400).json({ success: false, message: "Amount is required." });
             return;
         }
-        const userId = ((_a = req.user) === null || _a === void 0 ? void 0 : _a.id) || null;
+        const userId = ((_a = req.user) === null || _a === void 0 ? void 0 : _a.id) || undefined;
         if (!id) {
             res.status(400).json({ success: false, message: "Recipient ID is required." });
             return;

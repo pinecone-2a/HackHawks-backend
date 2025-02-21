@@ -12,7 +12,7 @@ export const createDonation = async (req: CustomRequest, res: Response) => {
       return; 
     }
 
-    const userId = req.user?.id || null;
+    const userId = req.user?.id || undefined;
 
    
     if (!id) {
