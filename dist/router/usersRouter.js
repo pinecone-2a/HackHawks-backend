@@ -16,7 +16,7 @@ exports.usersRouter = (0, express_1.Router)();
 exports.usersRouter.post("/sign-up", SIGNUP_controller_1.signUpController);
 exports.usersRouter.post("/sign-in", SIGNIN_controller_1.signInController);
 exports.usersRouter.post("/:username", CHECK_username_1.checkUsername);
-// Request password forgot 
+// Request password forgot
 exports.usersRouter.post("/reset/password", REQUEST_otp_1.forgotPassword);
 // otp verify bolon shine password awah endpoint
 exports.usersRouter.post("/reset/change-password", VERIFY_otp_1.verifyOTP);
