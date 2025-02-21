@@ -18,7 +18,7 @@ export const createDonation = async (req: CustomRequest, res: Response) => {
         specialMessage: specialMessage || "",
         socialURLOrBuyMeACoffee: socialURL || "",
         recipentId: id,
-        donorId: userId || null,
+        donorId: userId || undefined,
         donorName: userId ? req.user?.name : "Guest",
       },
     });

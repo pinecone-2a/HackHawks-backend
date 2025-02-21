@@ -26,7 +26,7 @@ const createDonation = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 specialMessage: specialMessage || "",
                 socialURLOrBuyMeACoffee: socialURL || "",
                 recipentId: id,
-                donorId: userId || null,
+                donorId: userId || undefined,
                 donorName: userId ? (_b = req.user) === null || _b === void 0 ? void 0 : _b.name : "Guest",
             },
         });
