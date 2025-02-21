@@ -15,7 +15,7 @@ const createDonation = (req, res) => __awaiter(void 0, void 0, void 0, function*
     var _a, _b;
     try {
         const { specialMessage, socialURL, donationAmout, id } = req.body;
-        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+        const userId = ((_a = req.user) === null || _a === void 0 ? void 0 : _a.id) || undefined;
         if (!donationAmout) {
             res.status(400).json({ success: false, message: "Amount is required." });
             return;
@@ -26,7 +26,7 @@ const createDonation = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 specialMessage: specialMessage || "",
                 socialURLOrBuyMeACoffee: socialURL || "",
                 recipentId: id,
-                donorId: userId || null,
+                donorId: userId,
                 donorName: userId ? (_b = req.user) === null || _b === void 0 ? void 0 : _b.name : "Guest",
             },
         });
