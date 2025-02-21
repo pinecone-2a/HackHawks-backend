@@ -15,22 +15,24 @@ const createDonation = (req, res) => __awaiter(void 0, void 0, void 0, function*
     var _a;
     try {
         const { specialMessage, socialURL, donationAmout, id } = req.body;
+        // Ensure donationAmout is provided
         if (!donationAmout) {
             res.status(400).json({ success: false, message: "Amount is required." });
             return;
         }
-        const userId = ((_a = req.user) === null || _a === void 0 ? void 0 : _a.id) || undefined;
+        // Ensure recipient ID is provided
         if (!id) {
             res.status(400).json({ success: false, message: "Recipient ID is required." });
             return;
         }
+        const userId = ((_a = req.user) === null || _a === void 0 ? void 0 : _a.id) || undefined; // This can be undefined if not logged in
         const newDonation = yield __1.prisma.donation.create({
             data: {
-                amount: Number(donationAmout),
-                specialMessage: typeof specialMessage === 'string' ? specialMessage : "",
-                socialURLOrBuyMeACoffee: typeof socialURL === 'string' ? socialURL : "",
-                recipentId: String(id),
-                donorId: userId,
+                amount: Number(donationAmout), // Ensure donation amount is a number
+                specialMessage: typeof specialMessage === 'string' ? specialMessage : "", // Ensure it's a string
+                socialURLOrBuyMeACoffee: typeof socialURL === 'string' ? socialURL : "", // Ensure it's a string
+                recipentId: id, // Ensure id is treated as a string
+                donorId: userId === undefined ? undefined : userId, // Ensure donorId is either string or undefined
             },
         });
         res.json({ success: true, data: newDonation });

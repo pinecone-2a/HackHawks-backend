@@ -6,27 +6,27 @@ export const createDonation = async (req: CustomRequest, res: Response) => {
   try {
     const { specialMessage, socialURL, donationAmout, id } = req.body;
 
-
+    // Ensure donationAmout is provided
     if (!donationAmout) {
-      res.status(400).json({ success: false, message: "Amount is required." })
-      return; 
+     res.status(400).json({ success: false, message: "Amount is required." })
+     return;
     }
 
-    const userId = req.user?.id || undefined;
-
-   
+    // Ensure recipient ID is provided
     if (!id) {
-      res.status(400).json({ success: false, message: "Recipient ID is required." }) 
+      res.status(400).json({ success: false, message: "Recipient ID is required." })
       return;
     }
 
+    const userId = req.user?.id || undefined; // This can be undefined if not logged in
+
     const newDonation = await prisma.donation.create({
       data: {
-        amount: Number(donationAmout),
-        specialMessage: typeof specialMessage === 'string' ? specialMessage : "",
-        socialURLOrBuyMeACoffee: typeof socialURL === 'string' ? socialURL : "", 
-        recipentId: String(id), 
-        donorId: userId,
+        amount: Number(donationAmout), // Ensure donation amount is a number
+        specialMessage: typeof specialMessage === 'string' ? specialMessage : "", // Ensure it's a string
+        socialURLOrBuyMeACoffee: typeof socialURL === 'string' ? socialURL : "", // Ensure it's a string
+        recipentId: id as string, // Ensure id is treated as a string
+        donorId: userId === undefined ? undefined : userId, // Ensure donorId is either string or undefined
       },
     });
 
