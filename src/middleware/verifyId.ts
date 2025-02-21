@@ -25,7 +25,7 @@ export interface CustomRequest extends Request {
 
       req.user = {
           id: decoded.id,
-          name: profile?.name || "Anonymous",
+          name: profile?.name || "Guest",
       };
 
       next(); // Make sure next() is only called once

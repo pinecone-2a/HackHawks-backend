@@ -27,7 +27,7 @@ const verifyId = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
         });
         req.user = {
             id: decoded.id,
-            name: (profile === null || profile === void 0 ? void 0 : profile.name) || "Anonymous",
+            name: (profile === null || profile === void 0 ? void 0 : profile.name) || "Guest",
         };
         next(); // Make sure next() is only called once
     }
