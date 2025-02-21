@@ -5,21 +5,28 @@ import { CustomRequest } from "../../middleware/verifyId";
 export const createDonation = async (req: CustomRequest, res: Response) => {
   try {
     const { specialMessage, socialURL, donationAmout, id } = req.body;
-    const userId = req.user?.id || undefined;
+
 
     if (!donationAmout) {
       res.status(400).json({ success: false, message: "Amount is required." })
+      return; 
+    }
+
+    const userId = req.user?.id || null;
+
+   
+    if (!id) {
+      res.status(400).json({ success: false, message: "Recipient ID is required." }) 
       return;
     }
 
     const newDonation = await prisma.donation.create({
       data: {
         amount: Number(donationAmout),
-        specialMessage: specialMessage || "",
-        socialURLOrBuyMeACoffee: socialURL || "",
-        recipentId: id,
+        specialMessage: typeof specialMessage === 'string' ? specialMessage : "",
+        socialURLOrBuyMeACoffee: typeof socialURL === 'string' ? socialURL : "", 
+        recipentId: String(id), 
         donorId: userId,
-        
       },
     });
 
@@ -29,8 +36,8 @@ export const createDonation = async (req: CustomRequest, res: Response) => {
     console.error("Error creating donation:", e);
 
     if (!res.headersSent) {
-     res.status(500).json({ success: false, message: "Internal server error." })
-     return ;
+      res.status(500).json({ success: false, message: "Internal server error." })
+      return;
     }
   }
 };
