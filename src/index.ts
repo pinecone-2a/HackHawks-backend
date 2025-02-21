@@ -27,7 +27,7 @@ app.use(
 export const prisma = new PrismaClient();
 
 // bank card backend endpoint ///
-app.use("/bank-card", verifyToken,  bankCardRouter);
+app.use("/bank-card", verifyToken, bankCardRouter);
 
 // profiel backend endpoint //
 app.use("/profile", profileRouter);
